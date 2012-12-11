@@ -1,6 +1,5 @@
 import java.io.File;
 
-
 public class Photomanager {
 
 	private Database database;
@@ -19,6 +18,9 @@ public class Photomanager {
 	public static void main(String[] args) {
 		Photomanager DUT = new Photomanager();
 		DUT.open(new File(".").getAbsolutePath() + "/../playground/database");
+
+		MainWindow window = new MainWindow();
+		window.open();
 
 		Database.closeConnection();
 	}
