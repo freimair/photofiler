@@ -15,13 +15,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
 
 public class MainWindow extends ApplicationWindow {
 
 	private Composite listComposite;
+	private TagTree tagTree;
 
 	public MainWindow() {
 		super(null);
@@ -33,43 +32,7 @@ public class MainWindow extends ApplicationWindow {
 		Composite container = (Composite) super.createContents(parent);
 		container.setLayout(new FillLayout());
 
-		final Tree tree = new Tree(container, SWT.BORDER | SWT.CHECK);
-
-		for (int loopIndex1 = 0; loopIndex1 < 5; loopIndex1++) {
-			TreeItem item0 = new TreeItem(tree, 0);
-			item0.setText("Level 0 Item " + loopIndex1);
-			for (int loopIndex2 = 0; loopIndex2 < 5; loopIndex2++) {
-				TreeItem item1 = new TreeItem(item0, 0);
-				item1.setText("Level 1 Item " + loopIndex2);
-				for (int loopIndex3 = 0; loopIndex3 < 5; loopIndex3++) {
-					TreeItem item2 = new TreeItem(item1, 0);
-					item2.setText("Level 2 Item " + loopIndex3);
-				}
-			}
-		}
-		
-		tree.addSelectionListener(new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (SWT.CHECK == e.detail) {
-					// maintain childrens checked state
-					setChildrensCheckedState(((TreeItem) e.item).getChecked(),
-							((TreeItem) e.item));
-
-					// maintain parents checked state
-					maintainParentsCheckedState(
-							((TreeItem) e.item).getChecked(),
-							((TreeItem) e.item));
-				}
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		tagTree = new TagTree(container, SWT.NONE);
 
 		ScrolledComposite scrolledListComposite = new ScrolledComposite(
 				container, SWT.V_SCROLL);
@@ -138,26 +101,5 @@ public class MainWindow extends ApplicationWindow {
 		listComposite.redraw();
 		getShell().layout();
 	}
-
-	private void setChildrensCheckedState(boolean checked, TreeItem item) {
-		for (TreeItem current : item.getItems())
-			setChildrensCheckedState(checked, current);
-
-		item.setChecked(checked);
-	}
-
-	private void maintainParentsCheckedState(boolean checked, TreeItem item) {
-		try {
-			if (checked)
-				for (TreeItem current : item.getParentItem().getItems())
-					if (!current.getChecked())
-						return;
-
-			item.getParentItem().setChecked(checked);
-			maintainParentsCheckedState(checked, item.getParentItem());
-		} catch (NullPointerException e) {
-			// reached the tree's root
-		}
-	};
 
 }
