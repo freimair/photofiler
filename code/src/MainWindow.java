@@ -1,5 +1,6 @@
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -57,6 +58,15 @@ public class MainWindow extends ApplicationWindow {
 				
 			}
 		});
+
+		ScrolledComposite scrolledListComposite = new ScrolledComposite(
+				container, SWT.V_SCROLL);
+		scrolledListComposite.setExpandHorizontal(true);
+		scrolledListComposite.setExpandVertical(true);
+
+		Composite listComposite = new Composite(scrolledListComposite, SWT.NONE);
+		scrolledListComposite.setContent(listComposite);
+
 
 		return container;
 	}
