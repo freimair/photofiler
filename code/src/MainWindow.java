@@ -13,7 +13,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
@@ -80,7 +79,7 @@ public class MainWindow extends ApplicationWindow {
 		listComposite = new Composite(scrolledListComposite, SWT.NONE);
 		scrolledListComposite.setContent(listComposite);
 
-		listComposite.setLayout(new RowLayout(SWT.VERTICAL));
+		listComposite.setLayout(new RowLayout());
 
 		listComposite.addPaintListener(new PaintListener() {
 
@@ -133,10 +132,8 @@ public class MainWindow extends ApplicationWindow {
 		for (Control current : listComposite.getChildren())
 			current.dispose();
 
-		for (String current : Item.getAll()) {
-			Label label = new Label(listComposite, SWT.NONE);
-			label.setText(current);
-		}
+		for (String current : Item.getAll())
+			new ListItem(listComposite, SWT.NONE, current);
 
 		listComposite.redraw();
 		getShell().layout();
