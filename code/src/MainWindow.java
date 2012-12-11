@@ -17,6 +17,7 @@ public class MainWindow extends ApplicationWindow {
 
 	private TagTree tagTree;
 	private ObjectList objectList;
+	private DetailsArea detailsArea;
 
 	public MainWindow() {
 		super(null);
@@ -26,12 +27,15 @@ public class MainWindow extends ApplicationWindow {
 
 	protected Control createContents(Composite parent) {
 		Composite container = (Composite) super.createContents(parent);
-		container.setLayout(new GridLayout(2, false));
+		container.setLayout(new GridLayout(3, false));
 
 		tagTree = new TagTree(container, SWT.NONE);
 		tagTree.setLayoutData(new GridData(200, SWT.DEFAULT));
 
 		objectList = new ObjectList(container, SWT.NONE);
+
+		detailsArea = new DetailsArea(container, SWT.NONE, objectList);
+		objectList.setDetailsArea(detailsArea);
 
 		return container;
 	}
