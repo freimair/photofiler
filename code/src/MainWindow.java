@@ -69,12 +69,13 @@ public class MainWindow extends ApplicationWindow {
 	}
 
 	private void maintainParentsCheckedState(boolean checked, TreeItem item) {
-		// TODO check if every kid is checked. if not - return
-		if (checked)
-			return;
-
-		item.setChecked(checked);
 		try {
+			if (checked)
+				for (TreeItem current : item.getParentItem().getItems())
+					if (!current.getChecked())
+						return;
+
+			item.getParentItem().setChecked(checked);
 			maintainParentsCheckedState(checked, item.getParentItem());
 		} catch (NullPointerException e) {
 			// reached the tree's root
