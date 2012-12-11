@@ -4,7 +4,8 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -25,9 +26,10 @@ public class MainWindow extends ApplicationWindow {
 
 	protected Control createContents(Composite parent) {
 		Composite container = (Composite) super.createContents(parent);
-		container.setLayout(new FillLayout());
+		container.setLayout(new GridLayout(2, false));
 
 		tagTree = new TagTree(container, SWT.NONE);
+		tagTree.setLayoutData(new GridData(200, SWT.DEFAULT));
 
 		objectList = new ObjectList(container, SWT.NONE);
 
