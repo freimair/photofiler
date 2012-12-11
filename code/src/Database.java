@@ -24,9 +24,9 @@ public class Database {
 					"jdbc:h2:" + path.replace(".h2.db", ""), "", "");
 
 			// check structure
-			// - go for the pictures table
+			// - go for the objects table
 			Statement stmt = conn.createStatement();
-			stmt.executeQuery("SELECT * FROM photos");
+			stmt.executeQuery("SELECT * FROM objects");
 			stmt.close();
 
 		} catch (JdbcSQLException e) {
@@ -38,16 +38,16 @@ public class Database {
 			try {
 				stmt = conn.createStatement();
 				try {
-					stmt.execute("DROP TABLE photos, filters");
+					stmt.execute("DROP TABLE objects, tags");
 				} catch (Exception e1) {
 					// we go here when a drop table is unsuccessful (not
 					// existing e.g.)
 				}
-				stmt.execute("CREATE TABLE photos ("
-						+ "pid int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+				stmt.execute("CREATE TABLE objects ("
+						+ "oid int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 						+ "path varchar(350) NOT NULL UNIQUE)");
 				stmt.execute("CREATE TABLE tags ("
-						+ "fid int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+						+ "tid int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 						+ "name varchar(200) NOT NULL)");
 				stmt.close();
 			} catch (SQLException e1) {
@@ -73,7 +73,7 @@ public class Database {
 		}
 	}
 
-	public void execute(String sql) throws SQLException {
+	public static void execute(String sql) throws SQLException {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -89,7 +89,7 @@ public class Database {
 		}
 	}
 
-	public List<String> getStringList(String sql) throws SQLException {
+	public static List<String> getStringList(String sql) throws SQLException {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -109,7 +109,7 @@ public class Database {
 		}
 	}
 
-	public List<Integer> getIntegerList(String sql) throws SQLException {
+	public static List<Integer> getIntegerList(String sql) throws SQLException {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -129,7 +129,7 @@ public class Database {
 		}
 	}
 
-	public int getInteger(String sql) throws SQLException {
+	public static int getInteger(String sql) throws SQLException {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -148,7 +148,7 @@ public class Database {
 		}
 	}
 
-	public String getString(String sql) throws SQLException {
+	public static String getString(String sql) throws SQLException {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
