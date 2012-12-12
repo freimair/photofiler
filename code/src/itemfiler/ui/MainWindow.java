@@ -1,3 +1,6 @@
+package itemfiler.ui;
+import itemfiler.model.Item;
+
 import java.io.File;
 
 import org.eclipse.jface.window.ApplicationWindow;

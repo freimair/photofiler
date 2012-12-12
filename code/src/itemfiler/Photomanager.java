@@ -1,15 +1,17 @@
+package itemfiler;
+import itemfiler.model.Database;
+import itemfiler.ui.MainWindow;
+
 import java.io.File;
 
 public class Photomanager {
-
-	private Database database;
 
 	public Photomanager() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public void open(String path) {
-		database = new Database(path);
+		Database.init(path);
 	}
 	
 	/**

@@ -1,3 +1,4 @@
+package itemfiler.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +15,7 @@ public class Database {
 	private static final boolean DEBUG = true;
 	private static Connection conn;
 
-	public Database(String path) {
+	public static void init(String path) {
 		try {
 			Class.forName("org.h2.Driver");
 			if (DEBUG)

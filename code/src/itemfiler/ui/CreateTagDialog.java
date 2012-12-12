@@ -1,3 +1,6 @@
+package itemfiler.ui;
+import itemfiler.model.Tag;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;

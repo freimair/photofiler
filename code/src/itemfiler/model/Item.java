@@ -1,3 +1,5 @@
+package itemfiler.model;
+
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Collection;

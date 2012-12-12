@@ -1,3 +1,6 @@
+package itemfiler.ui;
+import itemfiler.model.Item;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;

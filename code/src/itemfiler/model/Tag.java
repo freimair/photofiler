@@ -1,3 +1,5 @@
+package itemfiler.model;
+
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
