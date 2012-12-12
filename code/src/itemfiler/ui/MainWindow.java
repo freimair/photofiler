@@ -7,8 +7,7 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -18,7 +17,6 @@ import org.eclipse.swt.widgets.ToolItem;
 
 public class MainWindow extends ApplicationWindow {
 
-	private TagTree tagTree;
 	private ObjectList objectList;
 	private DetailsArea detailsArea;
 
@@ -29,17 +27,18 @@ public class MainWindow extends ApplicationWindow {
 	}
 
 	protected Control createContents(Composite parent) {
+		getShell().setSize(800, 800);
 		Composite container = (Composite) super.createContents(parent);
-		container.setLayout(new GridLayout(3, false));
+		container.setLayout(new FillLayout());
 
-		tagTree = new TagTree(container, SWT.CHECK);
-		tagTree.setLayoutData(new GridData(200, SWT.DEFAULT));
+		new TagTree(container, SWT.CHECK);
 
-		objectList = new ObjectList(container, SWT.NONE);
+		objectList = new ObjectList(container, SWT.BORDER);
 
 		detailsArea = new DetailsArea(container, SWT.NONE, objectList);
 		objectList.setDetailsArea(detailsArea);
 
+		container.layout();
 		return container;
 	}
 

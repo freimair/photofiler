@@ -19,7 +19,7 @@ public class Item {
 					+ "')");
 
 			// add to cache
-			int newId = Database.getInteger("SELECT MAX(oid) FROM photos");
+			int newId = Database.getInteger("SELECT MAX(oid) FROM objects");
 			cache.put(newId, new Item(newId, new File(path)));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
