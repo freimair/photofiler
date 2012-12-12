@@ -49,8 +49,19 @@ public class Tag {
 	}
 
 	// ####### NON-STATICS #######
+	private int id;
+	private String name;
 
-	public Tag(int currentId, String string) {
-		// TODO Auto-generated constructor stub
+	public Tag(int currentId, String name) {
+		id = currentId;
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getSimpleName() {
+		return name.substring(name.lastIndexOf(";") + 1);
 	}
 }

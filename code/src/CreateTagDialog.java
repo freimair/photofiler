@@ -8,18 +8,26 @@ import org.eclipse.swt.widgets.Text;
 
 public class CreateTagDialog extends Dialog {
 
+	private Text newTag;
+
 	protected CreateTagDialog(Shell parentShell) {
 		super(parentShell);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);
 
-		Text newTag = new Text(container, SWT.BORDER);
+		newTag = new Text(container, SWT.BORDER);
 		
 		return container;
+	}
+
+	@Override
+	protected void okPressed() {
+		Tag.create(newTag.getText());
+
+		super.okPressed();
 	}
 
 }

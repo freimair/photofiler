@@ -65,17 +65,13 @@ public class TagTree extends Composite {
 	}
 
 	public void refresh() {
-		for (int loopIndex1 = 0; loopIndex1 < 5; loopIndex1++) {
+		// clean
+		for (TreeItem current : tree.getItems())
+			current.dispose();
+
+		for(Tag current : Tag.getAll()) {
 			TreeItem item0 = new TreeItem(tree, 0);
-			item0.setText("Level 0 Item " + loopIndex1);
-			for (int loopIndex2 = 0; loopIndex2 < 5; loopIndex2++) {
-				TreeItem item1 = new TreeItem(item0, 0);
-				item1.setText("Level 1 Item " + loopIndex2);
-				for (int loopIndex3 = 0; loopIndex3 < 5; loopIndex3++) {
-					TreeItem item2 = new TreeItem(item1, 0);
-					item2.setText("Level 2 Item " + loopIndex3);
-				}
-			}
+			item0.setText(current.getSimpleName());
 		}
 	}
 }
