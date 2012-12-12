@@ -4,6 +4,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -18,17 +19,33 @@ public class DetailsArea extends Refreshable {
 	private Text nameText;
 	private Composite tagsContainer;
 	private MainWindow mainWindow;
+	private Composite nothingSelectedComposite;
+	private Composite itemsSelectedComposite;
 
 	public DetailsArea(Composite parent, int style, MainWindow main) {
 		super(parent, style | SWT.BORDER);
 
 		mainWindow = main;
 
-		this.setLayout(new GridLayout(1, false));
+		this.setLayout(new GridLayout());
 
-		Label nameLabelLabel = new Label(this, SWT.NONE);
+		nothingSelectedComposite = new Composite(this, SWT.NONE);
+		nothingSelectedComposite
+.setLayoutData(new GridData(
+				GridData.FILL_HORIZONTAL));
+		nothingSelectedComposite.setLayout(new FillLayout());
+		Label nothingSelectedLabel = new Label(nothingSelectedComposite,
+				SWT.CENTER);
+		nothingSelectedLabel.setText("- nothing selected -");
+
+		itemsSelectedComposite = new Composite(this, SWT.NONE);
+		itemsSelectedComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		itemsSelectedComposite.setVisible(false);
+		itemsSelectedComposite.setLayout(new GridLayout(1, false));
+
+		Label nameLabelLabel = new Label(itemsSelectedComposite, SWT.NONE);
 		nameLabelLabel.setText("Name: ");
-		nameText = new Text(this, SWT.BORDER);
+		nameText = new Text(itemsSelectedComposite, SWT.BORDER);
 		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		nameText.addKeyListener(new KeyAdapter() {
@@ -40,15 +57,15 @@ public class DetailsArea extends Refreshable {
 			}
 		});
 
-		Label tagsContainerLabel = new Label(this, SWT.NONE);
+		Label tagsContainerLabel = new Label(itemsSelectedComposite, SWT.NONE);
 		tagsContainerLabel.setText("Tags: ");
-		tagsContainer = new Composite(this, SWT.NONE);
+		tagsContainer = new Composite(itemsSelectedComposite, SWT.NONE);
 		tagsContainer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		tagsContainer.setLayout(layout);
-		Button addTagButton = new Button(this, SWT.PUSH);
+		Button addTagButton = new Button(itemsSelectedComposite, SWT.PUSH);
 		addTagButton.setText("add tags");
 		addTagButton.setToolTipText("add new tags");
 		addTagButton.addSelectionListener(new SelectionAdapter() {
@@ -61,12 +78,15 @@ public class DetailsArea extends Refreshable {
 				mainWindow.refresh();
 			}
 		});
+
 		this.layout();
 	}
 
 	public void refresh() {
 		try {
 			nameText.setText(mainWindow.getSelected().getName());
+			nothingSelectedComposite.setVisible(false);
+			itemsSelectedComposite.setVisible(true);
 
 			// cleanup
 			for (Control current : tagsContainer.getChildren())
@@ -90,7 +110,8 @@ public class DetailsArea extends Refreshable {
 				});
 			}
 		} catch (NullPointerException e) {
-			this.setVisible(false);
+			nothingSelectedComposite.setVisible(true);
+			itemsSelectedComposite.setVisible(false);
 		}
 
 		tagsContainer.layout();
