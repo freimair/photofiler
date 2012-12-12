@@ -30,6 +30,18 @@ public class Tag {
 		return cache.values();
 	}
 
+	public static List<String> getFilteredStrings(String string) {
+		try {
+			return Database
+					.getStringList("SELECT name FROM tags WHERE name LIKE '"
+							+ string + "%'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private static void updateCache() {
 		try {
 			List<Integer> allIds = Database
