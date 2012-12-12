@@ -1,4 +1,6 @@
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -29,6 +31,14 @@ public class DetailsArea extends Composite {
 		Button addTagButton = new Button(this, SWT.PUSH);
 		addTagButton.setText("+");
 		addTagButton.setToolTipText("add new tags");
+		addTagButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				AddTagDialog dialog = new AddTagDialog(getShell());
+				dialog.open();
+			}
+		});
 		this.layout();
 	}
 

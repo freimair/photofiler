@@ -29,7 +29,7 @@ public class MainWindow extends ApplicationWindow {
 		Composite container = (Composite) super.createContents(parent);
 		container.setLayout(new GridLayout(3, false));
 
-		tagTree = new TagTree(container, SWT.NONE);
+		tagTree = new TagTree(container, SWT.CHECK);
 		tagTree.setLayoutData(new GridData(200, SWT.DEFAULT));
 
 		objectList = new ObjectList(container, SWT.NONE);
