@@ -1,4 +1,7 @@
 package itemfiler.ui;
+
+import itemfiler.model.Item;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -13,9 +16,11 @@ import org.eclipse.swt.widgets.Shell;
 public class AddTagDialog extends Dialog {
 
 	private TagTree tagTree;
+	private Item item;
 
-	protected AddTagDialog(Shell parentShell) {
+	protected AddTagDialog(Shell parentShell, Item target) {
 		super(parentShell);
+		item = target;
 	}
 
 	@Override
@@ -42,7 +47,7 @@ public class AddTagDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-
+		item.addTags(tagTree.getSelection());
 		super.okPressed();
 	}
 

@@ -85,4 +85,46 @@ public class Item {
 			e.printStackTrace();
 		}
 	}
+
+	public void addTags(List<String> tags) {
+		for (String current : tags)
+			addTag(current);
+	}
+
+	public void addTag(String tag) {
+		try {
+			int tid = Database.getInteger("SELECT tid FROM tags WHERE name='"
+					+ tag
+					+ "'");
+			Database.execute("INSERT INTO objects_tags (oid, tid) VALUES ("
+					+ id + "," + tid + ")");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public List<String> getTags() {
+		try {
+			return Database
+					.getStringList("SELECT name FROM tags JOIN objects_tags ON tags.tid=objects_tags.tid WHERE objects_tags.oid='"
+							+ id + "'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void removeTag(String tag) {
+		int tid;
+		try {
+			tid = Database.getInteger("SELECT tid FROM tags WHERE name='" + tag
+					+ "'");
+			Database.execute("DELETE FROM objects_tags WHERE tid='" + tid + "'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

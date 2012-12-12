@@ -48,6 +48,8 @@ public class Database {
 						+ "oid int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 						+ "name varchar(25),"
 						+ "path varchar(350) NOT NULL UNIQUE)");
+				stmt.execute("CREATE TABLE objects_tags ("
+						+ "oid int NOT NULL, tid int NOT NULL)");
 				stmt.execute("CREATE TABLE tags ("
 						+ "tid int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 						+ "name varchar(200) NOT NULL UNIQUE)");

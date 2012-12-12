@@ -4,7 +4,6 @@ import itemfiler.model.Tag;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -77,15 +76,8 @@ public class TagTree extends Refreshable {
 		for (TreeItem current : tree.getItems())
 			current.dispose();
 
-		List<Tag> sorted = new ArrayList<>(Tag.getAll());
-		Collections.sort(sorted, new Comparator<Tag>() {
-
-			@Override
-			public int compare(Tag o1, Tag o2) {
-				return o1.getName().compareTo(o2.getName());
-			}
-
-		});
+		List<String> sorted = new ArrayList<>(Tag.getFilteredStrings(""));
+		Collections.sort(sorted);
 
 		build(null, "", sorted);
 
@@ -97,11 +89,11 @@ public class TagTree extends Refreshable {
 	 * @param tags
 	 *            alphabetically ASC sorted list of tags.
 	 */
-	private void build(TreeItem parent, String currentPrefix, List<Tag> tags) {
+	private void build(TreeItem parent, String currentPrefix, List<String> tags) {
 		try {
 			for (;;)
-				if (tags.get(0).getName().startsWith(currentPrefix)) {
-					String[] tmp = tags.get(0).getName()
+				if (tags.get(0).startsWith(currentPrefix)) {
+					String[] tmp = tags.get(0)
 							.substring(currentPrefix.length()).split("-");
 
 					TreeItem item;
@@ -119,5 +111,19 @@ public class TagTree extends Refreshable {
 		} catch (IndexOutOfBoundsException e) {
 		}
 
+	}
+
+	public List<String> getSelection() {
+		List<String> result = new ArrayList<>();
+		for (TreeItem current : tree.getSelection())
+			result.add(rebuildTagName(current));
+		return result;
+	}
+
+	private String rebuildTagName(TreeItem item) {
+		if (null == item.getParentItem())
+			return item.getText();
+		else
+			return rebuildTagName(item.getParentItem()) + "-" + item.getText();
 	}
 }

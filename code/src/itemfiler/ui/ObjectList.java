@@ -67,6 +67,6 @@ public class ObjectList extends Refreshable {
 		}
 
 		listComposite.redraw();
-		getShell().layout();
+		this.layout();
 	}
 }

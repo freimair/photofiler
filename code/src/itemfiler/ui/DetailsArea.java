@@ -55,28 +55,42 @@ public class DetailsArea extends Refreshable {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				AddTagDialog dialog = new AddTagDialog(getShell());
+				AddTagDialog dialog = new AddTagDialog(getShell(), mainWindow
+						.getSelected());
 				dialog.open();
+				mainWindow.refresh();
 			}
 		});
 		this.layout();
 	}
 
 	public void refresh() {
-		nameText.setText(mainWindow.getSelected().getName());
+		try {
+			nameText.setText(mainWindow.getSelected().getName());
 
-		// cleanup
-		for (Control current : tagsContainer.getChildren())
-			current.dispose();
-		
-		for (int i = 0; i < 3; i++) {
-			Text tmplabel = new Text(tagsContainer, SWT.BORDER);
-			tmplabel.setText("tag " + i);
-			tmplabel.setEditable(false);
-			tmplabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			Button tmpbutton = new Button(tagsContainer, SWT.PUSH);
-			tmpbutton.setText("x");
-			tmpbutton.setToolTipText("remove tag");
+			// cleanup
+			for (Control current : tagsContainer.getChildren())
+				current.dispose();
+
+			for (final String current : mainWindow.getSelected().getTags()) {
+				Text tmplabel = new Text(tagsContainer, SWT.BORDER);
+				tmplabel.setText(current);
+				tmplabel.setEditable(false);
+				tmplabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+				Button tmpbutton = new Button(tagsContainer, SWT.PUSH);
+				tmpbutton.setText("x");
+				tmpbutton.setToolTipText("remove tag");
+				tmpbutton.addSelectionListener(new SelectionAdapter() {
+
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						mainWindow.getSelected().removeTag(current);
+						mainWindow.refresh();
+					}
+				});
+			}
+		} catch (NullPointerException e) {
+			this.setVisible(false);
 		}
 
 		tagsContainer.layout();
