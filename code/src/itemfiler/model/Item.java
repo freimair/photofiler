@@ -20,7 +20,7 @@ public class Item {
 
 			// add to cache
 			int newId = Database.getInteger("SELECT MAX(oid) FROM objects");
-			cache.put(newId, new Item(newId, new File(path)));
+			cache.put(newId, new Item(newId));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,13 +40,7 @@ public class Item {
 			allIds.removeAll(cache.keySet());
 
 			for (int currentId : allIds)
-				cache.put(
-						currentId,
-						new Item(
-								currentId,
-								new File(
-										Database.getString("SELECT path FROM objects WHERE oid = "
-												+ currentId))));
+				cache.put(currentId, new Item(currentId));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,12 +51,38 @@ public class Item {
 	private int id;
 	private File path;
 
-	private Item(int currentId, File file) {
+	private Item(int currentId) {
 		id = currentId;
-		path = file;
+		try {
+			path = new File(
+					Database.getString("SELECT path FROM objects WHERE oid = "
+							+ currentId));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String getName() {
-		return path.getName();
+		try {
+			String tmp = Database
+					.getString("SELECT name FROM objects WHERE oid = "
+					+ id);
+			return null == tmp ? path.getName() : tmp;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "error";
+	}
+
+	public void setName(String newName) {
+		try {
+			Database.execute("UPDATE objects SET name='" + newName
+					+ "' WHERE oid='" + id + "'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

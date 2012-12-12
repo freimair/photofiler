@@ -1,5 +1,7 @@
 package itemfiler.ui;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -14,7 +16,7 @@ import org.eclipse.swt.widgets.Text;
 public class DetailsArea extends Composite {
 
 	private ObjectList list;
-	private Text nameLabel;
+	private Text nameText;
 	private Composite tagsContainer;
 
 	public DetailsArea(Composite parent, int style, ObjectList objectList) {
@@ -25,8 +27,18 @@ public class DetailsArea extends Composite {
 
 		Label nameLabelLabel = new Label(this, SWT.NONE);
 		nameLabelLabel.setText("Name: ");
-		nameLabel = new Text(this, SWT.BORDER);
-		nameLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		nameText = new Text(this, SWT.BORDER);
+		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		nameText.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				list.getSelected().setName(nameText.getText());
+
+			}
+		});
+
 		Label tagsContainerLabel = new Label(this, SWT.NONE);
 		tagsContainerLabel.setText("Tags: ");
 		tagsContainer = new Composite(this, SWT.NONE);
@@ -50,7 +62,7 @@ public class DetailsArea extends Composite {
 	}
 
 	public void refresh() {
-		nameLabel.setText(list.getSelected().getName());
+		nameText.setText(list.getSelected().getName());
 
 		// cleanup
 		for (Control current : tagsContainer.getChildren())
