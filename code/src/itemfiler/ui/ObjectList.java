@@ -12,6 +12,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 
 public class ObjectList extends Refreshable {
@@ -35,6 +36,8 @@ public class ObjectList extends Refreshable {
 		scrolledListComposite.setContent(listComposite);
 
 		listComposite.setLayout(new RowLayout());
+		listComposite.setBackground(Display.getCurrent().getSystemColor(
+				SWT.COLOR_LIST_BACKGROUND));
 
 		listComposite.addPaintListener(new PaintListener() {
 
