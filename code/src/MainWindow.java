@@ -56,7 +56,7 @@ public class MainWindow extends ApplicationWindow {
 				dialog.setFilterExtensions(new String[] { "*.jpg;*.jpeg" });
 				if (!"".equals(dialog.open())) {
 					for(String current : dialog.getFileNames())
-						Item.add(dialog.getFilterPath() + File.separatorChar + current);
+						Item.create(dialog.getFilterPath() + File.separatorChar + current);
 					refresh();
 				}
 			}

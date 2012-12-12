@@ -7,13 +7,13 @@ import org.eclipse.swt.widgets.Label;
 
 public class ListItem extends Composite {
 
-	public ListItem(Composite parent, int style, String path) {
+	public ListItem(Composite parent, int style, Item current) {
 		super(parent, style | SWT.BORDER);
 		this.setLayout(new RowLayout());
 		this.setLayoutData(new RowData(250, 100));
 
 		Label label = new Label(this, SWT.NONE);
-		label.setText(path);
+		label.setText(current.getName());
 	}
 
 }

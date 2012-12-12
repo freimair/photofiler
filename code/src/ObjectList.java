@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Control;
 public class ObjectList extends Composite {
 
 	private Composite listComposite;
-	private String selected;
+	private Item selected;
 	private DetailsArea myDetailsArea;
 
 	public ObjectList(Composite parent, int style) {
@@ -49,7 +49,7 @@ public class ObjectList extends Composite {
 		for (Control current : listComposite.getChildren())
 			current.dispose();
 
-		for (final String current : Item.getAll()) {
+		for (final Item current : Item.getAll()) {
 			ListItem tmp = new ListItem(listComposite, SWT.NONE, current);
 			tmp.addMouseListener(new MouseAdapter() {
 
@@ -65,7 +65,7 @@ public class ObjectList extends Composite {
 		getShell().layout();
 	}
 
-	public String getSelected() {
+	public Item getSelected() {
 		return selected;
 	}
 

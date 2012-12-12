@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Label;
 public class DetailsArea extends Composite {
 
 	private ObjectList list;
-	private Label pathLabel;
+	private Label nameLabel;
 	private Composite tagsContainer;
 
 	public DetailsArea(Composite parent, int style, ObjectList objectList) {
@@ -22,7 +22,7 @@ public class DetailsArea extends Composite {
 		this.setLayoutData(new GridData(200, SWT.DEFAULT));
 		this.setLayout(new RowLayout(SWT.VERTICAL));
 
-		pathLabel = new Label(this, SWT.NONE);
+		nameLabel = new Label(this, SWT.NONE);
 		tagsContainer = new Composite(this, SWT.BORDER);
 		tagsContainer.setLayoutData(new RowData(175, 200));
 		tagsContainer.setLayout(new GridLayout(2, false));
@@ -33,7 +33,7 @@ public class DetailsArea extends Composite {
 	}
 
 	public void refresh() {
-		pathLabel.setText(list.getSelected());
+		nameLabel.setText(list.getSelected().getName());
 
 		// cleanup
 		for (Control current : tagsContainer.getChildren())
