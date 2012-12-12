@@ -14,14 +14,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 
-public class ObjectList extends Composite {
+public class ObjectList extends Refreshable {
 
 	private Composite listComposite;
-	private Item selected;
-	private DetailsArea myDetailsArea;
+	private MainWindow mainWindow;
 
-	public ObjectList(Composite parent, int style) {
+	public ObjectList(Composite parent, int style, MainWindow mainWindow) {
 		super(parent, style);
+
+		this.mainWindow = mainWindow;
+
 		this.setLayout(new FillLayout());
 
 		ScrolledComposite scrolledListComposite = new ScrolledComposite(this,
@@ -58,8 +60,8 @@ public class ObjectList extends Composite {
 
 				@Override
 				public void mouseDown(MouseEvent e) {
-					selected = current;
-					myDetailsArea.refresh();
+					mainWindow.setSelected(current);
+					mainWindow.refresh();
 				}
 			});
 		}
@@ -67,13 +69,4 @@ public class ObjectList extends Composite {
 		listComposite.redraw();
 		getShell().layout();
 	}
-
-	public Item getSelected() {
-		return selected;
-	}
-
-	public void setDetailsArea(DetailsArea detailsArea) {
-		myDetailsArea = detailsArea;
-	}
-
 }

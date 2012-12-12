@@ -13,15 +13,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 
-public class DetailsArea extends Composite {
+public class DetailsArea extends Refreshable {
 
-	private ObjectList list;
 	private Text nameText;
 	private Composite tagsContainer;
+	private MainWindow mainWindow;
 
-	public DetailsArea(Composite parent, int style, ObjectList objectList) {
+	public DetailsArea(Composite parent, int style, MainWindow main) {
 		super(parent, style | SWT.BORDER);
-		list = objectList;
+
+		mainWindow = main;
 
 		this.setLayout(new GridLayout(1, false));
 
@@ -34,7 +35,7 @@ public class DetailsArea extends Composite {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				list.getSelected().setName(nameText.getText());
+				mainWindow.getSelected().setName(nameText.getText());
 
 			}
 		});
@@ -62,7 +63,7 @@ public class DetailsArea extends Composite {
 	}
 
 	public void refresh() {
-		nameText.setText(list.getSelected().getName());
+		nameText.setText(mainWindow.getSelected().getName());
 
 		// cleanup
 		for (Control current : tagsContainer.getChildren())

@@ -2,6 +2,8 @@ package itemfiler.ui;
 import itemfiler.model.Item;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -20,6 +22,9 @@ public class MainWindow extends ApplicationWindow {
 	private ObjectList objectList;
 	private DetailsArea detailsArea;
 
+	private Set<Refreshable> refreshables = new HashSet<Refreshable>();
+	private Item selected;
+
 	public MainWindow() {
 		super(null);
 		setBlockOnOpen(true);
@@ -31,12 +36,11 @@ public class MainWindow extends ApplicationWindow {
 		Composite container = (Composite) super.createContents(parent);
 		container.setLayout(new FillLayout());
 
-		new TagTree(container, SWT.CHECK);
+		refreshables.add(new TagTree(container, SWT.CHECK, this));
 
-		objectList = new ObjectList(container, SWT.BORDER);
+		refreshables.add(new ObjectList(container, SWT.BORDER, this));
 
-		detailsArea = new DetailsArea(container, SWT.NONE, objectList);
-		objectList.setDetailsArea(detailsArea);
+		refreshables.add(new DetailsArea(container, SWT.NONE, this));
 
 		container.layout();
 		return container;
@@ -74,6 +78,15 @@ public class MainWindow extends ApplicationWindow {
 	}
 
 	public void refresh() {
-		objectList.refresh();
+		for (Refreshable current : refreshables)
+			current.refresh();
+	}
+
+	public void setSelected(Item selected) {
+		this.selected = selected;
+	}
+
+	public Item getSelected() {
+		return selected;
 	}
 }

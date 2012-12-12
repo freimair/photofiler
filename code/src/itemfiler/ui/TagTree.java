@@ -15,11 +15,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-public class TagTree extends Composite {
+public class TagTree extends Refreshable {
 
 	private Tree tree;
 
-	public TagTree(Composite parent, int style) {
+	public TagTree(Composite parent, int style, MainWindow mainWindow) {
 		super(parent, style);
 
 		this.setLayout(new FillLayout());

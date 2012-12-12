@@ -28,7 +28,7 @@ public class AddTagDialog extends Dialog {
 		Label tagTreeLabel = new Label(container, SWT.NONE);
 		tagTreeLabel.setText("tags:");
 
-		tagTree = new TagTree(container, SWT.MULTI);
+		tagTree = new TagTree(container, SWT.MULTI, null);
 		tagTree.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		return container;
