@@ -49,7 +49,7 @@ public class Database {
 						+ "path varchar(350) NOT NULL UNIQUE)");
 				stmt.execute("CREATE TABLE tags ("
 						+ "tid int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-						+ "name varchar(200) NOT NULL)");
+						+ "name varchar(200) NOT NULL UNIQUE)");
 				stmt.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
