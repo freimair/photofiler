@@ -13,6 +13,7 @@ public class ListItem extends Composite {
 
 	private Label iconLabel;
 	private Label nameLabel;
+	private boolean selected = false;
 
 	public ListItem(Composite parent, int style, Item current) {
 		super(parent, style | SWT.TRANSPARENT);
@@ -40,7 +41,8 @@ public class ListItem extends Composite {
 	}
 
 	public void setSelected(boolean b) {
-		if (b) {
+		selected = b;
+		if (selected) {
 			iconLabel.setBackground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_LIST_SELECTION));
 			nameLabel.setBackground(Display.getCurrent().getSystemColor(
@@ -56,6 +58,10 @@ public class ListItem extends Composite {
 					SWT.COLOR_LIST_BACKGROUND));
 		}
 
+	}
+
+	public boolean getSelected() {
+		return selected;
 	}
 
 }

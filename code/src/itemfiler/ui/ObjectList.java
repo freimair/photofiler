@@ -60,7 +60,7 @@ public class ObjectList extends Refreshable {
 
 		RowData layoutData = new RowData(100, 60);
 		for (final Item current : Item.getAll()) {
-			ListItem tmp = new ListItem(listComposite, SWT.NONE, current);
+			final ListItem tmp = new ListItem(listComposite, SWT.NONE, current);
 			tmp.setLayoutData(layoutData);
 			try {
 				if (mainWindow.getSelected().contains(current))
@@ -72,7 +72,9 @@ public class ObjectList extends Refreshable {
 
 				@Override
 				public void mouseDown(MouseEvent e) {
-					if ((e.stateMask & SWT.CTRL) > 0)
+					if (tmp.getSelected())
+						mainWindow.removeSelected(current);
+					else if ((e.stateMask & SWT.CTRL) > 0)
 						mainWindow.addSelected(current);
 					else
 						mainWindow.setSelected(current);

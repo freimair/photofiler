@@ -91,8 +91,11 @@ public class MainWindow extends ApplicationWindow {
 		this.selected.add(selected);
 	}
 
+	public void removeSelected(Item item) {
+		this.selected.remove(item);
+	}
+
 	public Set<Item> getSelected() {
 		return selected;
 	}
-
 }

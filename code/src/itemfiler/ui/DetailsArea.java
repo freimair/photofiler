@@ -133,7 +133,7 @@ public class DetailsArea extends Refreshable {
 			}
 			nothingSelectedComposite.setVisible(false);
 			itemsSelectedComposite.setVisible(true);
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			nothingSelectedComposite.setVisible(true);
 			itemsSelectedComposite.setVisible(false);
 		}
