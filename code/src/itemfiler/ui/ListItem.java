@@ -39,4 +39,23 @@ public class ListItem extends Composite {
 		nameLabel.addMouseListener(listener);
 	}
 
+	public void setSelected(boolean b) {
+		if (b) {
+			iconLabel.setBackground(Display.getCurrent().getSystemColor(
+					SWT.COLOR_LIST_SELECTION));
+			nameLabel.setBackground(Display.getCurrent().getSystemColor(
+					SWT.COLOR_LIST_SELECTION));
+			this.setBackground(Display.getCurrent().getSystemColor(
+					SWT.COLOR_LIST_SELECTION));
+		} else {
+			iconLabel.setBackground(Display.getCurrent().getSystemColor(
+					SWT.COLOR_LIST_BACKGROUND));
+			nameLabel.setBackground(Display.getCurrent().getSystemColor(
+					SWT.COLOR_LIST_BACKGROUND));
+			this.setBackground(Display.getCurrent().getSystemColor(
+					SWT.COLOR_LIST_BACKGROUND));
+		}
+
+	}
+
 }

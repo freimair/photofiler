@@ -9,6 +9,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -57,8 +58,16 @@ public class ObjectList extends Refreshable {
 		for (Control current : listComposite.getChildren())
 			current.dispose();
 
+		RowData layoutData = new RowData(100, 60);
 		for (final Item current : Item.getAll()) {
 			ListItem tmp = new ListItem(listComposite, SWT.NONE, current);
+			tmp.setLayoutData(layoutData);
+			try {
+				if (mainWindow.getSelected().equals(current))
+					tmp.setSelected(true);
+			} catch (NullPointerException e) {
+				// nothing selected
+			}
 			tmp.addMouseListener(new MouseAdapter() {
 
 				@Override
