@@ -1,4 +1,11 @@
 package itemfiler.ui;
+
+import itemfiler.model.Item;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -52,8 +59,8 @@ public class DetailsArea extends Refreshable {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				mainWindow.getSelected().setName(nameText.getText());
-
+				for (Item current : mainWindow.getSelected())
+					current.setName(nameText.getText());
 			}
 		});
 
@@ -84,15 +91,29 @@ public class DetailsArea extends Refreshable {
 
 	public void refresh() {
 		try {
-			nameText.setText(mainWindow.getSelected().getName());
-			nothingSelectedComposite.setVisible(false);
-			itemsSelectedComposite.setVisible(true);
+			Set<String> commonTags = null;
+			String name = null;
+			for (Item current : mainWindow.getSelected()) {
+				List<String> tags = current.getTags();
+				if (null == commonTags) {
+					commonTags = new HashSet<String>();
+					commonTags.addAll(tags);
+				} else
+					commonTags.retainAll(tags);
+
+				if (null == name)
+					name = current.getName();
+				else if (!name.equals(current.getName()))
+					name = "";
+			}
+
+			nameText.setText(name);
 
 			// cleanup
 			for (Control current : tagsContainer.getChildren())
 				current.dispose();
 
-			for (final String current : mainWindow.getSelected().getTags()) {
+			for (final String current : commonTags) {
 				Text tmplabel = new Text(tagsContainer, SWT.BORDER);
 				tmplabel.setText(current);
 				tmplabel.setEditable(false);
@@ -104,18 +125,19 @@ public class DetailsArea extends Refreshable {
 
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						mainWindow.getSelected().removeTag(current);
+						for (Item currentItem : mainWindow.getSelected())
+							currentItem.removeTag(current);
 						mainWindow.refresh();
 					}
 				});
 			}
+			nothingSelectedComposite.setVisible(false);
+			itemsSelectedComposite.setVisible(true);
 		} catch (NullPointerException e) {
 			nothingSelectedComposite.setVisible(true);
 			itemsSelectedComposite.setVisible(false);
 		}
 
-		tagsContainer.layout();
-		this.layout();
+		itemsSelectedComposite.layout();
 	}
-
 }

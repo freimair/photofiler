@@ -63,7 +63,7 @@ public class ObjectList extends Refreshable {
 			ListItem tmp = new ListItem(listComposite, SWT.NONE, current);
 			tmp.setLayoutData(layoutData);
 			try {
-				if (mainWindow.getSelected().equals(current))
+				if (mainWindow.getSelected().contains(current))
 					tmp.setSelected(true);
 			} catch (NullPointerException e) {
 				// nothing selected
@@ -72,7 +72,10 @@ public class ObjectList extends Refreshable {
 
 				@Override
 				public void mouseDown(MouseEvent e) {
-					mainWindow.setSelected(current);
+					if ((e.stateMask & SWT.CTRL) > 0)
+						mainWindow.addSelected(current);
+					else
+						mainWindow.setSelected(current);
 					mainWindow.refresh();
 				}
 			});

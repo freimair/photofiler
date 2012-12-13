@@ -23,7 +23,7 @@ public class MainWindow extends ApplicationWindow {
 	private DetailsArea detailsArea;
 
 	private Set<Refreshable> refreshables = new HashSet<Refreshable>();
-	private Item selected;
+	private Set<Item> selected = new HashSet<Item>();
 
 	public MainWindow() {
 		super(null);
@@ -83,10 +83,16 @@ public class MainWindow extends ApplicationWindow {
 	}
 
 	public void setSelected(Item selected) {
-		this.selected = selected;
+		this.selected.clear();
+		addSelected(selected);
 	}
 
-	public Item getSelected() {
+	public void addSelected(Item selected) {
+		this.selected.add(selected);
+	}
+
+	public Set<Item> getSelected() {
 		return selected;
 	}
+
 }
