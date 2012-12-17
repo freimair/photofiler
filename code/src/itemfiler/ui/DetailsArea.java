@@ -139,5 +139,6 @@ public class DetailsArea extends Refreshable {
 		}
 
 		itemsSelectedComposite.layout();
+		tagsContainer.layout();
 	}
 }
