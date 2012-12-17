@@ -2,6 +2,8 @@ package itemfiler.ui;
 import itemfiler.model.Item;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ public class MainWindow extends ApplicationWindow {
 
 	private Set<Refreshable> refreshables = new HashSet<Refreshable>();
 	private Set<Item> selected = new HashSet<Item>();
+	private Collection<String> filter = new ArrayList<>();
 
 	public MainWindow() {
 		super(null);
@@ -78,8 +81,13 @@ public class MainWindow extends ApplicationWindow {
 	}
 
 	public void refresh() {
+		refresh(null);
+	}
+
+	public void refresh(Refreshable except) {
 		for (Refreshable current : refreshables)
-			current.refresh();
+			if (!current.equals(except))
+				current.refresh();
 	}
 
 	public void setSelected(Item selected) {
@@ -97,5 +105,13 @@ public class MainWindow extends ApplicationWindow {
 
 	public Set<Item> getSelected() {
 		return selected;
+	}
+
+	public void setFilter(Collection<String> tags) {
+		filter = tags;
+	}
+
+	public Collection<String> getFilter() {
+		return filter;
 	}
 }

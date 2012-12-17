@@ -33,6 +33,33 @@ public class Item {
 		return cache.values();
 	}
 
+	public static Collection<Item> getFiltered(Collection<String> tags) {
+		if (0 >= tags.size())
+			return getAll();
+
+		updateCache();
+
+		String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
+		if(0 < tags.size())
+			sql += " WHERE";
+		for(String current : tags)
+			sql += " tags.name LIKE '" + current + "%'";
+
+		try {
+			List<Integer> ids = Database.getIntegerList(sql);
+
+			HashMap<Integer, Item> result = new HashMap<Integer, Item>(cache);
+			result.keySet().retainAll(ids);
+			return result.values();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	private static void updateCache() {
 		try {
 			List<Integer> allIds = Database

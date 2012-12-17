@@ -17,12 +17,16 @@ import org.eclipse.swt.widgets.TreeItem;
 public class TagTree extends Refreshable {
 
 	private Tree tree;
+	private MainWindow mainWindow;
 
-	public TagTree(Composite parent, int style, MainWindow mainWindow) {
+	public TagTree(Composite parent, int style, MainWindow main) {
 		super(parent, style);
+
+		mainWindow = main;
 
 		this.setLayout(new FillLayout());
 		tree = new Tree(this, SWT.BORDER | style);
+		tree.setData(this);
 
 		tree.addSelectionListener(new SelectionListener() {
 
@@ -37,6 +41,11 @@ public class TagTree extends Refreshable {
 					maintainParentsCheckedState(
 							((TreeItem) e.item).getChecked(),
 							((TreeItem) e.item));
+
+					List<String> result = new ArrayList<>();
+					gatherCheckedItems(null, result);
+					mainWindow.setFilter(result);
+					mainWindow.refresh((Refreshable) tree.getData());
 				}
 			}
 
@@ -48,6 +57,20 @@ public class TagTree extends Refreshable {
 		});
 
 		refresh();
+	}
+
+	private void gatherCheckedItems(TreeItem node, List<String> result) {
+		try {
+			if (node.getChecked())
+				result.add(node.getText());
+			else
+				for (TreeItem current : node.getItems())
+					gatherCheckedItems(current, result);
+		} catch (NullPointerException e) {
+			// process root elements
+			for (TreeItem current : tree.getItems())
+				gatherCheckedItems(current, result);
+		}
 	}
 
 	private void setChildrensCheckedState(boolean checked, TreeItem item) {
