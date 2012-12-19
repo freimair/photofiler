@@ -1,6 +1,11 @@
 package itemfiler.model;
 
+import itemfiler.Photomanager;
+import itemfiler.util.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,13 +20,26 @@ public class Item {
 	// ######### STATICS #########
 	public static void create(String path) {
 		try {
-			Database.execute("INSERT INTO objects (path) VALUES ('" + path
+			// move it to internal storage
+			File file = new File(path);
+			File target = new File(Photomanager.home.getAbsolutePath()
+					+ File.separatorChar
+					+ "data"
+					+ File.separatorChar + file.getName());
+
+			if (!target.getParentFile().exists())
+				target.getParentFile().mkdirs();
+
+			Files.move(file.toPath(), target.toPath());
+
+			Database.execute("INSERT INTO objects (path) VALUES ('"
+					+ FileUtils.getRelativePath(Photomanager.home, target)
 					+ "')");
 
 			// add to cache
 			int newId = Database.getInteger("SELECT MAX(oid) FROM objects");
 			cache.put(newId, new Item(newId));
-		} catch (SQLException e) {
+		} catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
