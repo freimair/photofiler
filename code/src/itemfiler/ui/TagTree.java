@@ -106,7 +106,7 @@ public class TagTree extends Refreshable {
 
 		build(null, "", sorted);
 
-		if ((getShell().getStyle() & SWT.CHECK) > 0) {
+		if ((getStyle() & SWT.CHECK) > 0) {
 			TreeItem tmp = new TreeItem(tree, SWT.NONE);
 			tmp.setText("untagged");
 
