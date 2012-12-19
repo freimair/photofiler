@@ -44,7 +44,8 @@ public class TagTree extends Refreshable {
 
 					List<String> result = new ArrayList<>();
 					gatherCheckedItems(null, result);
-					mainWindow.setFilter(result, result.remove("untagged"));
+					mainWindow.setFilter(result, result.remove("untagged"),
+							result.remove("trash"));
 					mainWindow.refresh((Refreshable) tree.getData());
 				}
 			}
@@ -107,6 +108,9 @@ public class TagTree extends Refreshable {
 		if ((getShell().getStyle() & SWT.CHECK) > 0) {
 			TreeItem tmp = new TreeItem(tree, SWT.NONE);
 			tmp.setText("untagged");
+
+			tmp = new TreeItem(tree, SWT.NONE);
+			tmp.setText("trash");
 		}
 
 	}

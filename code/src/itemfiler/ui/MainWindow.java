@@ -28,6 +28,7 @@ public class MainWindow extends ApplicationWindow {
 	private Set<Item> selected = new HashSet<Item>();
 	private Collection<String> filter = new ArrayList<>();
 	private boolean filterIncludeUntagged;
+	private boolean filterIncludeTrash;
 
 	public MainWindow() {
 		super(null);
@@ -108,9 +109,11 @@ public class MainWindow extends ApplicationWindow {
 		return selected;
 	}
 
-	public void setFilter(Collection<String> tags, boolean includeUntagged) {
+	public void setFilter(Collection<String> tags, boolean includeUntagged,
+			boolean includeTrash) {
 		filter = tags;
 		filterIncludeUntagged = includeUntagged;
+		filterIncludeTrash = includeTrash;
 	}
 
 	public Collection<String> getFilter() {
@@ -119,5 +122,9 @@ public class MainWindow extends ApplicationWindow {
 
 	public boolean getFilterIncludeUntagged() {
 		return filterIncludeUntagged;
+	}
+
+	public boolean getFilterIncludeTrash() {
+		return filterIncludeTrash;
 	}
 }

@@ -53,9 +53,7 @@ public class Item {
 	}
 
 	public static Collection<Item> getFiltered(Collection<String> tags,
-			boolean includeUntagged) {
-		if (0 <= tags.size() && !includeUntagged)
-			return getAll();
+			boolean includeUntagged, boolean includeTrash) {
 
 		updateCache();
 
@@ -74,6 +72,10 @@ public class Item {
 			if (includeUntagged)
 				ids.addAll(Database
 						.getIntegerList("SELECT oid FROM objects WHERE oid IS NOT (SELECT oid FROM objects_tags)"));
+
+			if(includeTrash)
+				ids.addAll(Database
+						.getIntegerList("SELECT oid FROM objects WHERE trash IS TRUE"));
 
 			HashMap<Integer, Item> result = new HashMap<Integer, Item>(cache);
 			result.keySet().retainAll(ids);
@@ -176,6 +178,16 @@ public class Item {
 			tid = Database.getInteger("SELECT tid FROM tags WHERE name='" + tag
 					+ "'");
 			Database.execute("DELETE FROM objects_tags WHERE tid='" + tid + "'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void moveToTrash() {
+		try {
+			Database.execute("UPDATE objects SET trash = TRUE WHERE oid='" + id
+					+ "'");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

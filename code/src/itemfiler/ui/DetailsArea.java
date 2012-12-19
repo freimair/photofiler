@@ -86,6 +86,18 @@ public class DetailsArea extends Refreshable {
 			}
 		});
 
+		Button deleteObjectButton = new Button(itemsSelectedComposite, SWT.PUSH);
+		deleteObjectButton.setText("delete");
+		deleteObjectButton.setToolTipText("Delete selected objects");
+		deleteObjectButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Item current : mainWindow.getSelected())
+					current.moveToTrash();
+			}
+		});
+
 		this.layout();
 	}
 
