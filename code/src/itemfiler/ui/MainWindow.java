@@ -27,6 +27,7 @@ public class MainWindow extends ApplicationWindow {
 	private Set<Refreshable> refreshables = new HashSet<Refreshable>();
 	private Set<Item> selected = new HashSet<Item>();
 	private Collection<String> filter = new ArrayList<>();
+	private boolean filterIncludeUntagged;
 
 	public MainWindow() {
 		super(null);
@@ -107,11 +108,16 @@ public class MainWindow extends ApplicationWindow {
 		return selected;
 	}
 
-	public void setFilter(Collection<String> tags) {
+	public void setFilter(Collection<String> tags, boolean includeUntagged) {
 		filter = tags;
+		filterIncludeUntagged = includeUntagged;
 	}
 
 	public Collection<String> getFilter() {
 		return filter;
+	}
+
+	public boolean getFilterIncludeUntagged() {
+		return filterIncludeUntagged;
 	}
 }

@@ -63,7 +63,8 @@ public class ObjectList extends Refreshable {
 		RowData layoutData = new RowData(100, 60);
 
 		Collection<String> tags = mainWindow.getFilter();
-		for (final Item current : Item.getFiltered(tags)) {
+		for (final Item current : Item.getFiltered(tags,
+				mainWindow.getFilterIncludeUntagged())) {
 			final ListItem tmp = new ListItem(listComposite, SWT.NONE, current);
 			tmp.setLayoutData(layoutData);
 			try {

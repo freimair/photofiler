@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -51,20 +52,28 @@ public class Item {
 		return cache.values();
 	}
 
-	public static Collection<Item> getFiltered(Collection<String> tags) {
-		if (0 >= tags.size())
+	public static Collection<Item> getFiltered(Collection<String> tags,
+			boolean includeUntagged) {
+		if (0 <= tags.size() && !includeUntagged)
 			return getAll();
 
 		updateCache();
 
-		String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
-		if(0 < tags.size())
-			sql += " WHERE";
-		for(String current : tags)
-			sql += " tags.name LIKE '" + current + "%'";
-
 		try {
-			List<Integer> ids = Database.getIntegerList(sql);
+			List<Integer> ids = new ArrayList<>();
+			if (0 > tags.size()) {
+				String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
+				if (0 < tags.size())
+					sql += " WHERE";
+				for (String current : tags)
+					sql += " tags.name LIKE '" + current + "%'";
+
+				ids.addAll(Database.getIntegerList(sql));
+			}
+
+			if (includeUntagged)
+				ids.addAll(Database
+						.getIntegerList("SELECT oid FROM objects WHERE oid IS NOT (SELECT oid FROM objects_tags)"));
 
 			HashMap<Integer, Item> result = new HashMap<Integer, Item>(cache);
 			result.keySet().retainAll(ids);
