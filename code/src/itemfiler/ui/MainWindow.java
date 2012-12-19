@@ -1,9 +1,9 @@
 package itemfiler.ui;
+
+import itemfiler.model.Filter;
 import itemfiler.model.Item;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +26,7 @@ public class MainWindow extends ApplicationWindow {
 
 	private Set<Refreshable> refreshables = new HashSet<Refreshable>();
 	private Set<Item> selected = new HashSet<Item>();
-	private Collection<String> filter = new ArrayList<>();
+	private Filter filter;
 	private boolean filterIncludeUntagged;
 	private boolean filterIncludeTrash;
 
@@ -109,22 +109,11 @@ public class MainWindow extends ApplicationWindow {
 		return selected;
 	}
 
-	public void setFilter(Collection<String> tags, boolean includeUntagged,
-			boolean includeTrash) {
-		filter = tags;
-		filterIncludeUntagged = includeUntagged;
-		filterIncludeTrash = includeTrash;
+	public void setFilter(Filter filter) {
+		this.filter = filter;
 	}
 
-	public Collection<String> getFilter() {
-		return filter;
-	}
-
-	public boolean getFilterIncludeUntagged() {
-		return filterIncludeUntagged;
-	}
-
-	public boolean getFilterIncludeTrash() {
-		return filterIncludeTrash;
+	public Filter getFilter() {
+		return filter != null ? filter : new Filter();
 	}
 }

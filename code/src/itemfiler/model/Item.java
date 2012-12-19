@@ -52,28 +52,29 @@ public class Item {
 		return cache.values();
 	}
 
-	public static Collection<Item> getFiltered(Collection<String> tags,
-			boolean includeUntagged, boolean includeTrash) {
+	public static Collection<Item> getFiltered(Filter filter) {
+		if (null == filter)
+			return getAll();
 
 		updateCache();
 
 		try {
 			List<Integer> ids = new ArrayList<>();
-			if (0 > tags.size()) {
+			if (0 < filter.getTags().size()) {
 				String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
-				if (0 < tags.size())
+				if (0 < filter.getTags().size())
 					sql += " WHERE";
-				for (String current : tags)
+				for (String current : filter.getTags())
 					sql += " tags.name LIKE '" + current + "%'";
 
 				ids.addAll(Database.getIntegerList(sql));
 			}
 
-			if (includeUntagged)
+			if (filter.isIncludeUntagged())
 				ids.addAll(Database
 						.getIntegerList("SELECT oid FROM objects WHERE oid IS NOT (SELECT oid FROM objects_tags)"));
 
-			if(includeTrash)
+			if (filter.isIncludeTrash())
 				ids.addAll(Database
 						.getIntegerList("SELECT oid FROM objects WHERE trash IS TRUE"));
 

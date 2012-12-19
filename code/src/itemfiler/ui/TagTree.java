@@ -1,5 +1,6 @@
 package itemfiler.ui;
 
+import itemfiler.model.Filter;
 import itemfiler.model.Tag;
 
 import java.util.ArrayList;
@@ -44,8 +45,8 @@ public class TagTree extends Refreshable {
 
 					List<String> result = new ArrayList<>();
 					gatherCheckedItems(null, result);
-					mainWindow.setFilter(result, result.remove("untagged"),
-							result.remove("trash"));
+					mainWindow.setFilter(new Filter(result, result
+							.remove("untagged"), result.remove("trash")));
 					mainWindow.refresh((Refreshable) tree.getData());
 				}
 			}

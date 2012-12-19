@@ -1,7 +1,6 @@
 package itemfiler.ui;
-import itemfiler.model.Item;
 
-import java.util.Collection;
+import itemfiler.model.Item;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -62,10 +61,7 @@ public class ObjectList extends Refreshable {
 
 		RowData layoutData = new RowData(100, 60);
 
-		Collection<String> tags = mainWindow.getFilter();
-		for (final Item current : Item.getFiltered(tags,
-				mainWindow.getFilterIncludeUntagged(),
-				mainWindow.getFilterIncludeTrash())) {
+		for (final Item current : Item.getFiltered(mainWindow.getFilter())) {
 			final ListItem tmp = new ListItem(listComposite, SWT.NONE, current);
 			tmp.setLayoutData(layoutData);
 			try {
