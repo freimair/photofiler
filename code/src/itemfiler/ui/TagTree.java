@@ -64,7 +64,7 @@ public class TagTree extends Refreshable {
 	private void gatherCheckedItems(TreeItem node, List<String> result) {
 		try {
 			if (node.getChecked())
-				result.add(node.getText());
+				result.add(rebuildTagName(node));
 			else
 				for (TreeItem current : node.getItems())
 					gatherCheckedItems(current, result);

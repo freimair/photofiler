@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class Item {
@@ -53,26 +54,39 @@ public class Item {
 	}
 
 	public static Collection<Item> getFiltered(Filter filter) {
-		if (null == filter)
+		if (filter.isShowAll())
 			return getAll();
 
 		updateCache();
 
 		try {
-			List<Integer> ids = new ArrayList<>();
+			List<Integer> ids = null;
 			if (0 < filter.getTags().size()) {
-				String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
-				if (0 < filter.getTags().size())
-					sql += " WHERE";
-				for (String current : filter.getTags())
-					sql += " tags.name LIKE '" + current + "%'";
+				for (Entry<String, Collection<String>> currentEntry : filter
+						.getTags().entrySet()) {
+					String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
 
-				ids.addAll(Database.getIntegerList(sql));
+					if (0 < currentEntry.getValue().size())
+						sql += " WHERE";
+
+					for (String current : currentEntry.getValue())
+						sql += " tags.name LIKE '" + current + "%' OR";
+
+					if (sql.endsWith("OR"))
+						sql = sql.substring(0, sql.length() - 3);
+
+					if (null == ids) {
+						ids = new ArrayList<>();
+						ids.addAll(Database.getIntegerList(sql));
+					} else
+						ids.retainAll(Database.getIntegerList(sql));
+				}
+
 			}
 
 			if (filter.isIncludeUntagged())
 				ids.addAll(Database
-						.getIntegerList("SELECT oid FROM objects WHERE oid IS NOT (SELECT oid FROM objects_tags)"));
+						.getIntegerList("SELECT oid FROM objects WHERE oid NOT IN (SELECT oid FROM objects_tags)"));
 
 			if (filter.isIncludeTrash())
 				ids.addAll(Database

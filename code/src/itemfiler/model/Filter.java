@@ -2,6 +2,8 @@ package itemfiler.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Filter {
 	private Collection<String> tags;
@@ -19,8 +21,19 @@ public class Filter {
 		this.tags = new ArrayList<>();
 	}
 
-	public Collection<String> getTags() {
-		return tags;
+	Map<String, Collection<String>> getTags() {
+		Map<String, Collection<String>> result = new HashMap<>();
+		String start = "";
+		for(String current : tags) {
+			String currentStart = current.split("-", 0)[0];
+			if (!start.equals(currentStart))
+				result.put(currentStart, new ArrayList<String>());
+
+			result.get(currentStart).add(current);
+		}
+
+		return result;
+
 	}
 
 	public boolean isIncludeUntagged() {
@@ -29,5 +42,15 @@ public class Filter {
 
 	public boolean isIncludeTrash() {
 		return includeTrash;
+	}
+
+	public boolean isShowAll() {
+		if (!tags.isEmpty())
+			return false;
+		if (includeUntagged)
+			return false;
+		if (includeTrash)
+			return false;
+		return true;
 	}
 }
