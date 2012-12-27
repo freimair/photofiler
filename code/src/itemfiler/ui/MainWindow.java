@@ -64,7 +64,7 @@ public class MainWindow extends ApplicationWindow {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell(), SWT.OPEN
 						| SWT.MULTI);
-				dialog.setFilterExtensions(new String[] { "*.jpg;*.jpeg" });
+				dialog.setFilterExtensions(new String[] { "*.jpg;*.jpeg;*.JPG" });
 				if (!"".equals(dialog.open())) {
 					for(String current : dialog.getFileNames())
 						Item.create(dialog.getFilterPath() + File.separatorChar + current);

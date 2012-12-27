@@ -32,6 +32,10 @@ public class Item {
 			if (!target.getParentFile().exists())
 				target.getParentFile().mkdirs();
 
+			for(int i = 0; i < 100 && target.exists(); i++)
+				target = new File(target.getParent() + File.separatorChar + i
+						+ file.getName());
+
 			Files.move(file.toPath(), target.toPath());
 
 			Database.execute("INSERT INTO objects (path) VALUES ('"
