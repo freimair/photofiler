@@ -2,6 +2,7 @@ package itemfiler.model;
 
 import itemfiler.Photomanager;
 import itemfiler.util.FileUtils;
+import itemfiler.util.ImageUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 
 
 public class Item {
@@ -125,17 +130,63 @@ public class Item {
 	// ####### NON-STATICS #######
 	private int id;
 	private File path;
+	private int boundingBox = 100;
+	private Image cachedImage;
+	private boolean portrait;
 
 	private Item(int currentId) {
 		id = currentId;
 		try {
-			path = new File(
+			path = FileUtils.recreateAbsolutPath(
+					Photomanager.home,
 					Database.getString("SELECT path FROM objects WHERE oid = "
 							+ currentId));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public Image getImage() {
+		if (null == cachedImage) {
+			Image fullImage = ImageUtils.load(path);
+			int width = fullImage.getBounds().width;
+			int height = fullImage.getBounds().height;
+
+			// limit caching sizes to 100%
+			int maxDimensions = Math.max(width, height);
+			if (boundingBox > maxDimensions)
+				boundingBox = maxDimensions;
+
+			// scale
+			int newheight = boundingBox;
+			int newwidth = boundingBox;
+			if (width > height) {
+				newheight = (int) (1.0 * boundingBox / width * height);
+			} else {
+				newwidth = (int) (1.0 * boundingBox / height * width);
+			}
+
+			cachedImage = new Image(Display.getCurrent(), newwidth, newheight);
+			GC gc = new GC(cachedImage);
+			gc.setAdvanced(true);
+			// gc.setAntialias(SWT.ON); // is about 10% slower if activated
+			gc.drawImage(fullImage, 0, 0, fullImage.getBounds().width,
+					fullImage.getBounds().height, 0, 0, newwidth, newheight);
+			gc.dispose();
+
+			if (cachedImage.getBounds().height > cachedImage.getBounds().width)
+				setPortrait(true);
+		}
+		return cachedImage;
+	}
+
+	private void setPortrait(boolean b) {
+		portrait = b;
+	}
+
+	public boolean isPortrait() {
+		return portrait;
 	}
 
 	public String getName() {
