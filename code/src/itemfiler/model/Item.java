@@ -8,8 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,11 @@ import java.util.Map.Entry;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 
 
 public class Item {
@@ -43,8 +50,10 @@ public class Item {
 
 			Files.move(file.toPath(), target.toPath());
 
-			Database.execute("INSERT INTO objects (path) VALUES ('"
+			Database.execute("INSERT INTO objects (path, creationDate) VALUES ('"
 					+ FileUtils.getRelativePath(Photomanager.home, target)
+					+ "','"
+					+ new Timestamp(getCreationDate(target).getTime())
 					+ "')");
 
 			// add to cache
@@ -132,6 +141,20 @@ public class Item {
 		}
 	}
 
+	private static Date getCreationDate(File path) {
+		try {
+			Metadata metaData = ImageMetadataReader.readMetadata(path);
+			if (metaData.containsDirectory(ExifSubIFDDirectory.class)) {
+				return metaData.getDirectory(ExifSubIFDDirectory.class)
+						.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
+			}
+		} catch (ImageProcessingException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Date();
+	}
+
 	// ####### NON-STATICS #######
 	private int id;
 	private File path;
@@ -149,6 +172,16 @@ public class Item {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public String getCreationDate() {
+		try {
+			return Database
+					.getString("SELECT creationDate FROM objects WHERE oid = '"
+							+ id + "'");
+		} catch (SQLException e) {
+			return "";
 		}
 	}
 

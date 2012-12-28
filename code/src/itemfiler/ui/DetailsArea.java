@@ -28,6 +28,7 @@ public class DetailsArea extends Refreshable {
 	private MainWindow mainWindow;
 	private Composite nothingSelectedComposite;
 	private Composite itemsSelectedComposite;
+	private Text dateText;
 
 	public DetailsArea(Composite parent, int style, MainWindow main) {
 		super(parent, style | SWT.BORDER);
@@ -63,6 +64,12 @@ public class DetailsArea extends Refreshable {
 					current.setName(nameText.getText());
 			}
 		});
+
+		Label dateLabelLabel = new Label(itemsSelectedComposite, SWT.NONE);
+		dateLabelLabel.setText("Date: ");
+		dateText = new Text(itemsSelectedComposite, SWT.BORDER);
+		dateText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		dateText.setEditable(false);
 
 		Label tagsContainerLabel = new Label(itemsSelectedComposite, SWT.NONE);
 		tagsContainerLabel.setText("Tags: ");
@@ -120,6 +127,12 @@ public class DetailsArea extends Refreshable {
 			}
 
 			nameText.setText(name);
+
+			if (1 == mainWindow.getSelected().size())
+				dateText.setText(mainWindow.getSelected().iterator().next()
+						.getCreationDate());
+			else
+				dateText.setText("");
 
 			// cleanup
 			for (Control current : tagsContainer.getChildren())
