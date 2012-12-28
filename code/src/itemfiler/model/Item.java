@@ -91,15 +91,20 @@ public class Item {
 						ids.retainAll(Database.getIntegerList(sql));
 				}
 
+			} else if (null == ids) {
+				ids = new ArrayList<>();
 			}
 
 			if (filter.isIncludeUntagged())
 				ids.addAll(Database
 						.getIntegerList("SELECT oid FROM objects WHERE oid NOT IN (SELECT oid FROM objects_tags)"));
 
+			List<Integer> trashed = Database
+					.getIntegerList("SELECT oid FROM objects WHERE trash IS TRUE");
 			if (filter.isIncludeTrash())
-				ids.addAll(Database
-						.getIntegerList("SELECT oid FROM objects WHERE trash IS TRUE"));
+				ids.addAll(trashed);
+			else
+				ids.removeAll(trashed);
 
 			HashMap<Integer, Item> result = new HashMap<Integer, Item>(cache);
 			result.keySet().retainAll(ids);
