@@ -20,8 +20,6 @@ public class ListItem extends Composite {
 	public ListItem(Composite parent, int style, Item current) {
 		super(parent, style | SWT.TRANSPARENT);
 		myObject = current;
-		this.setBackground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_LIST_BACKGROUND));
 		this.setLayout(new GridLayout(2, false));
 
 		iconLabel = new Label(this, SWT.CENTER);
@@ -42,6 +40,7 @@ public class ListItem extends Composite {
 		// nameLabel.setText(current.getName());
 		// nameLabel.setBackground(Display.getCurrent().getSystemColor(
 		// SWT.COLOR_LIST_BACKGROUND));
+		setSelected(false);
 		this.layout();
 	}
 
@@ -64,11 +63,11 @@ public class ListItem extends Composite {
 					SWT.COLOR_LIST_SELECTION));
 		} else {
 			iconLabel.setBackground(Display.getCurrent().getSystemColor(
-					SWT.COLOR_LIST_BACKGROUND));
+					SWT.COLOR_DARK_GRAY));
 			// nameLabel.setBackground(Display.getCurrent().getSystemColor(
 			// SWT.COLOR_LIST_BACKGROUND));
 			this.setBackground(Display.getCurrent().getSystemColor(
-					SWT.COLOR_LIST_BACKGROUND));
+					SWT.COLOR_DARK_GRAY));
 		}
 
 	}
