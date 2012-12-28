@@ -4,6 +4,7 @@ import itemfiler.model.Filter;
 import itemfiler.model.Tag;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -107,6 +108,19 @@ public class TagTree extends Refreshable {
 		build(null, "", sorted);
 
 		if ((getStyle() & SWT.CHECK) > 0) {
+			TreeItem dateTreeItem = new TreeItem(tree, SWT.NONE);
+			dateTreeItem.setText("date");
+			for (int year = 2005; year < Calendar.getInstance().get(
+					Calendar.YEAR); year++) {
+				TreeItem yearTreeItem = new TreeItem(dateTreeItem, SWT.NONE);
+				yearTreeItem.setText(Integer.toString(year));
+				for (int month = 1; month <= 12; month++) {
+					TreeItem monthTreeItem = new TreeItem(yearTreeItem,
+							SWT.NONE);
+					monthTreeItem.setText(Integer.toString(month));
+				}
+			}
+
 			TreeItem tmp = new TreeItem(tree, SWT.NONE);
 			tmp.setText("untagged");
 

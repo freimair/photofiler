@@ -21,7 +21,20 @@ public class Filter {
 		this.tags = new ArrayList<>();
 	}
 
-	Map<String, Collection<String>> getTags() {
+	public Collection<String> getDates() {
+		HashMap<String, Collection<String>> result = new HashMap<>(
+				getByRootElement());
+		return result.get("date");
+	}
+
+	public Map<String, Collection<String>> getTags() {
+		HashMap<String, Collection<String>> result = new HashMap<>(
+				getByRootElement());
+		result.keySet().remove("date");
+		return result;
+	}
+
+	private Map<String, Collection<String>> getByRootElement() {
 		Map<String, Collection<String>> result = new HashMap<>();
 		String start = "";
 		for(String current : tags) {

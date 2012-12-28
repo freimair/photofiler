@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -53,7 +53,8 @@ public class Item {
 			Database.execute("INSERT INTO objects (path, creationDate) VALUES ('"
 					+ FileUtils.getRelativePath(Photomanager.home, target)
 					+ "','"
-					+ new Timestamp(getCreationDate(target).getTime())
+					+ new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+							.format(getCreationDate(target))
 					+ "')");
 
 			// add to cache
@@ -100,9 +101,21 @@ public class Item {
 						ids.retainAll(Database.getIntegerList(sql));
 				}
 
-			} else if (null == ids) {
-				ids = new ArrayList<>();
 			}
+
+			if (!filter.getDates().isEmpty()) {
+				String sql = "SELECT oid FROM objects WHERE creationDate LIKE '"
+						+ filter.getDates().iterator().next()
+						.substring(5) + "%'";
+				if(null == ids) {
+					ids = new ArrayList<>();
+					ids.addAll(Database.getIntegerList(sql));
+				} else
+					ids.retainAll(Database.getIntegerList(sql));
+			}
+
+			if (null == ids)
+				ids = new ArrayList<>();
 
 			if (filter.isIncludeUntagged())
 				ids.addAll(Database

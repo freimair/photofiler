@@ -47,7 +47,7 @@ public class Database {
 				stmt.execute("CREATE TABLE objects ("
 						+ "oid int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 						+ "name varchar(25)," + "trash boolean DEFAULT false, "
-						+ "creationDate datetime,"
+						+ "creationDate varchar(20),"
 						+ "path varchar(350) NOT NULL UNIQUE)");
 				stmt.execute("CREATE TABLE objects_tags ("
 						+ "oid int NOT NULL, tid int NOT NULL)");
