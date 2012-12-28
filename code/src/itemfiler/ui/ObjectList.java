@@ -74,13 +74,19 @@ public class ObjectList extends Refreshable {
 
 				@Override
 				public void mouseDown(MouseEvent e) {
-					if (tmp.getSelected())
+					if (tmp.getSelected() && (e.stateMask & SWT.CTRL) > 0) {
 						mainWindow.removeSelected(current);
-					else if ((e.stateMask & SWT.CTRL) > 0)
+						tmp.setSelected(false);
+					} else if ((e.stateMask & SWT.CTRL) > 0) {
 						mainWindow.addSelected(current);
-					else
+						tmp.setSelected(true);
+					} else {
 						mainWindow.setSelected(current);
-					mainWindow.refresh();
+						for (Control currentItem : listComposite.getChildren())
+							if (currentItem instanceof ListItem)
+								((ListItem) currentItem).setSelected(false);
+						tmp.setSelected(true);
+					}
 				}
 			});
 		}

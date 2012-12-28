@@ -45,7 +45,8 @@ public class MainWindow extends ApplicationWindow {
 
 		refreshables.add(new ObjectList(container, SWT.BORDER, this));
 
-		refreshables.add(new DetailsArea(container, SWT.NONE, this));
+		detailsArea = new DetailsArea(container, SWT.NONE, this);
+		refreshables.add(detailsArea);
 
 		container.layout();
 		return container;
@@ -99,10 +100,12 @@ public class MainWindow extends ApplicationWindow {
 
 	public void addSelected(Item selected) {
 		this.selected.add(selected);
+		detailsArea.refresh();
 	}
 
 	public void removeSelected(Item item) {
 		this.selected.remove(item);
+		detailsArea.refresh();
 	}
 
 	public Set<Item> getSelected() {
