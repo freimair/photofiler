@@ -59,7 +59,7 @@ public class ObjectList extends Refreshable {
 		for (Control current : listComposite.getChildren())
 			current.dispose();
 
-		RowData layoutData = new RowData(200, 112);
+		RowData layoutData = new RowData(112, 112);
 
 		for (final Item current : Item.getFiltered(mainWindow.getFilter())) {
 			final ListItem tmp = new ListItem(listComposite, SWT.NONE, current);

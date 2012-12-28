@@ -38,10 +38,10 @@ public class ListItem extends Composite {
 		iconLabel.setBackground(Display.getCurrent().getSystemColor(
 				SWT.COLOR_LIST_BACKGROUND));
 		iconLabel.setLayoutData(new GridData(100, 100));
-		nameLabel = new Label(this, SWT.NONE);
-		nameLabel.setText(current.getName());
-		nameLabel.setBackground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_LIST_BACKGROUND));
+		// nameLabel = new Label(this, SWT.NONE);
+		// nameLabel.setText(current.getName());
+		// nameLabel.setBackground(Display.getCurrent().getSystemColor(
+		// SWT.COLOR_LIST_BACKGROUND));
 		this.layout();
 	}
 
@@ -50,7 +50,7 @@ public class ListItem extends Composite {
 		super.addMouseListener(listener);
 
 		iconLabel.addMouseListener(listener);
-		nameLabel.addMouseListener(listener);
+		// nameLabel.addMouseListener(listener);
 	}
 
 	public void setSelected(boolean b) {
@@ -58,15 +58,15 @@ public class ListItem extends Composite {
 		if (selected) {
 			iconLabel.setBackground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_LIST_SELECTION));
-			nameLabel.setBackground(Display.getCurrent().getSystemColor(
-					SWT.COLOR_LIST_SELECTION));
+			// nameLabel.setBackground(Display.getCurrent().getSystemColor(
+			// SWT.COLOR_LIST_SELECTION));
 			this.setBackground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_LIST_SELECTION));
 		} else {
 			iconLabel.setBackground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_LIST_BACKGROUND));
-			nameLabel.setBackground(Display.getCurrent().getSystemColor(
-					SWT.COLOR_LIST_BACKGROUND));
+			// nameLabel.setBackground(Display.getCurrent().getSystemColor(
+			// SWT.COLOR_LIST_BACKGROUND));
 			this.setBackground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_LIST_BACKGROUND));
 		}
