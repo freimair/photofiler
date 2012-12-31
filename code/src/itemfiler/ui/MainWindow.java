@@ -4,6 +4,7 @@ import itemfiler.model.Filter;
 import itemfiler.model.Item;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,12 +19,14 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.h2.store.fs.FileUtils;
 
 
 public class MainWindow extends ApplicationWindow {
@@ -162,6 +165,31 @@ public class MainWindow extends ApplicationWindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				ImageViewer.show();
+			}
+		});
+
+		ToolItem exportButton = new ToolItem(toolbar, SWT.PUSH);
+		exportButton.setText("export");
+		exportButton
+				.setToolTipText("export selected image to a arbitrary file system location");
+		exportButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				DirectoryDialog dd = new DirectoryDialog(getShell(), SWT.OPEN);
+				dd.setText("select export target location");
+				String result = dd.open();
+				if (null != result)
+					for (Item current : getSelected())
+						try {
+							FileUtils.copy(current.getPath().getAbsolutePath(),
+									result + File.separatorChar
+											+ current.getCreationDate() + "_"
+											+ current.getName());
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 			}
 		});
 

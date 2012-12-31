@@ -188,6 +188,10 @@ public class Item {
 		}
 	}
 
+	public File getPath() {
+		return path;
+	}
+
 	public String getCreationDate() {
 		try {
 			return Database
