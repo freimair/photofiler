@@ -199,6 +199,10 @@ public class Item {
 	}
 
 	public Image getImage() {
+		return ImageUtils.load(path);
+	}
+
+	public Image getThumbnail() {
 		if (null == cachedImage) {
 			Image fullImage = ImageUtils.load(path);
 			int width = fullImage.getBounds().width;

@@ -74,6 +74,8 @@ public class ObjectList extends Refreshable {
 
 				@Override
 				public void mouseDown(MouseEvent e) {
+					ImageViewer.showItem(current);
+
 					if (tmp.getSelected() && (e.stateMask & SWT.CTRL) > 0) {
 						mainWindow.removeSelected(current);
 						tmp.setSelected(false);
@@ -87,6 +89,12 @@ public class ObjectList extends Refreshable {
 								((ListItem) currentItem).setSelected(false);
 						tmp.setSelected(true);
 					}
+				}
+
+				@Override
+				public void mouseDoubleClick(MouseEvent e) {
+					ImageViewer.show();
+					ImageViewer.showItem(current);
 				}
 			});
 		}

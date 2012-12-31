@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
@@ -150,6 +151,17 @@ public class MainWindow extends ApplicationWindow {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 
+			}
+		});
+
+		ToolItem imageViewerButton = new ToolItem(toolbar, SWT.PUSH);
+		imageViewerButton.setText("ImageViewer");
+		imageViewerButton.setToolTipText("show/hide the ImageViewer window");
+		imageViewerButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ImageViewer.show();
 			}
 		});
 
