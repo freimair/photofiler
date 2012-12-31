@@ -27,15 +27,13 @@ import org.eclipse.swt.widgets.ToolItem;
 
 public class MainWindow extends ApplicationWindow {
 
+	private Set<Refreshable> refreshables = new HashSet<Refreshable>();
 	private ObjectList objectList;
 	private DetailsArea detailsArea;
+	private TagTree tagTree;
 
-	private Set<Refreshable> refreshables = new HashSet<Refreshable>();
 	private Set<Item> selected = new HashSet<Item>();
 	private Filter filter;
-	private boolean filterIncludeUntagged;
-	private boolean filterIncludeTrash;
-	private TagTree tagTree;
 
 	public MainWindow() {
 		super(null);
