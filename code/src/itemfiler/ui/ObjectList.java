@@ -23,10 +23,10 @@ public class ObjectList extends Refreshable {
 	private Composite listComposite;
 	private MainWindow mainWindow;
 
-	public ObjectList(Composite parent, int style, MainWindow mainWindow) {
+	public ObjectList(Composite parent, int style, MainWindow mainW) {
 		super(parent, style);
 
-		this.mainWindow = mainWindow;
+		this.mainWindow = mainW;
 
 		this.setLayout(new FillLayout());
 
@@ -70,8 +70,11 @@ public class ObjectList extends Refreshable {
 								current.getLocation().x
 										+ current.getBounds().width / 2,
 								current.getLocation().y
-										+ current.getBounds().height / 2))
+										+ current.getBounds().height / 2)) {
+							mainWindow.addSelected(((ListItem) current)
+									.getObject());
 							((ListItem) current).setSelected(true);
+						}
 					}
 				}
 			}

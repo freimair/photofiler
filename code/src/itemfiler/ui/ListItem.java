@@ -76,4 +76,8 @@ public class ListItem extends Composite {
 		return selected;
 	}
 
+	public Item getObject() {
+		return myObject;
+	}
+
 }
