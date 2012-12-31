@@ -76,6 +76,7 @@ public class Database {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// TODO do a backup of the database
 	}
 
 	public static void execute(String sql) throws SQLException {

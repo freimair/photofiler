@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Tracker;
 
 
 public class ObjectList extends Refreshable {
@@ -49,6 +50,30 @@ public class ObjectList extends Refreshable {
 				((ScrolledComposite) listComposite.getParent())
 						.setMinSize(listComposite.computeSize(r.width,
 								SWT.DEFAULT));
+			}
+		});
+
+		listComposite.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				final Tracker tracker = new Tracker(listComposite, SWT.RESIZE);
+
+				tracker.setRectangles(new Rectangle[] { new Rectangle(e.x, e.y,
+						1, 1), });
+				tracker.open();
+
+				Rectangle result = tracker.getRectangles()[0];
+				for (Control current : listComposite.getChildren()) {
+					if (current instanceof ListItem) {
+						if (result.contains(
+								current.getLocation().x
+										+ current.getBounds().width / 2,
+								current.getLocation().y
+										+ current.getBounds().height / 2))
+							((ListItem) current).setSelected(true);
+					}
+				}
 			}
 		});
 
