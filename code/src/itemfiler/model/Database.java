@@ -163,10 +163,6 @@ public class Database {
 			ResultSet rs = stmt.executeQuery(sql + " LIMIT 1");
 			rs.next();
 			return rs.getString(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "";
 		} finally {
 			if (null != stmt)
 				stmt.close();

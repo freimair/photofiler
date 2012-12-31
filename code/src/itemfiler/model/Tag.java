@@ -7,11 +7,29 @@ import java.util.List;
 public class Tag {
 	// ######### STATICS #########
 	public static void create(String name) {
-		try {
-			Database.execute("INSERT INTO tags (name) VALUES ('" + name + "')");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String tagname = "";
+		for (String current : name.split("-")) {
+
+			// accumulate tag name one by one
+			if (!tagname.equals(""))
+				tagname += "-";
+			tagname += current;
+
+			// check if tag exists
+			try {
+				Database.getString("SELECT name FROM tags WHERE name = '"
+						+ tagname + "'");
+			} catch (SQLException e) {
+				// if not create
+				try {
+					Database.execute("INSERT INTO tags (name) VALUES ('"
+							+ tagname
+							+ "')");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 

@@ -22,9 +22,9 @@ public class Filter {
 	}
 
 	public Collection<String> getDates() {
-		HashMap<String, Collection<String>> result = new HashMap<>(
-				getByRootElement());
-		return result.get("date");
+		Collection<String> result = new HashMap<>(getByRootElement())
+				.get("date");
+		return null == result ? new ArrayList<String>() : result;
 	}
 
 	public Map<String, Collection<String>> getTags() {
