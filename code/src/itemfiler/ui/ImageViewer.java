@@ -89,12 +89,15 @@ public class ImageViewer extends ApplicationWindow {
 							targetHeight);
 
 					GC gc = new GC(currentImage);
+					gc.setBackground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_WIDGET_DARK_SHADOW));
+					gc.fillRectangle(currentImage.getBounds());
 					gc.setAdvanced(true);
 					gc.setAntialias(SWT.ON); // is about 10% slower if activated
 					gc.setInterpolation(SWT.HIGH);
 					gc.drawImage(fullImage, 0, 0, fullImage.getBounds().width,
-							fullImage.getBounds().height, 0, 0, targetWidth,
-							targetHeight);
+							fullImage.getBounds().height, 20, 20,
+							targetWidth - 40, targetHeight - 40);
 					gc.dispose();
 					imageLabel.setImage(currentImage);
 				}
