@@ -1,5 +1,6 @@
 package itemfiler.model;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,13 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.h2.jdbc.JdbcSQLException;
+import org.h2.store.fs.FileUtils;
 
 public class Database {
 
 	private static final boolean DEBUG = true;
 	private static Connection conn;
+	private static String path;
 
-	public static void init(String path) {
+	public static void init(String location) {
+		path = location;
 		try {
 			Class.forName("org.h2.Driver");
 			if (DEBUG)
@@ -76,7 +80,14 @@ public class Database {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// TODO do a backup of the database
+
+		try {
+			FileUtils.copy(path, path + ".bak");
+		} catch (IOException e) {
+			System.out
+					.println("There was a problem generating the database backup");
+			e.printStackTrace();
+		}
 	}
 
 	public static void execute(String sql) throws SQLException {
