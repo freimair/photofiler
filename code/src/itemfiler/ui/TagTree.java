@@ -41,9 +41,9 @@ public class TagTree extends Refreshable {
 				if (SWT.CHECK == e.detail) {
 					TreeItem item = (TreeItem) e.item;
 
-					// we have to negate the checked state answer
-					// because the checked state is updated before we
-					// get here
+					// we have to negate the checked state answer because the
+					// checked state is updated before we get here (the box was
+					// checked when we clicked it)
 					if (!item.getChecked()) {
 						item.setChecked(!item.getGrayed());
 						item.setGrayed(!item.getGrayed());
@@ -58,10 +58,14 @@ public class TagTree extends Refreshable {
 							new CheckedState(item.getChecked(), item
 									.getGrayed()), item);
 
-					List<String> result = new ArrayList<>();
-					gatherCheckedItems(null, result);
-					mainWindow.setFilter(new Filter(result, result
-							.remove("untagged"), result.remove("trash")));
+					List<String> include = new ArrayList<>();
+					gatherCheckedItems(null, include);
+
+					List<String> exclude = new ArrayList<>();
+					gatherBarredItems(null, exclude);
+
+					mainWindow.setFilter(new Filter(include, exclude, include
+							.remove("untagged"), include.remove("trash")));
 					mainWindow.refresh((Refreshable) tree.getData());
 				}
 			}
@@ -121,6 +125,20 @@ public class TagTree extends Refreshable {
 			// process root elements
 			for (TreeItem current : tree.getItems())
 				gatherCheckedItems(current, result);
+		}
+	}
+
+	private void gatherBarredItems(TreeItem node, List<String> result) {
+		try {
+			if (node.getGrayed())
+				result.add(rebuildTagName(node));
+			else
+				for (TreeItem current : node.getItems())
+					gatherBarredItems(current, result);
+		} catch (NullPointerException e) {
+			// process root elements
+			for (TreeItem current : tree.getItems())
+				gatherBarredItems(current, result);
 		}
 	}
 
