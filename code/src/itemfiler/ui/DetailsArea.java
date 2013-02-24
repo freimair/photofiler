@@ -128,11 +128,15 @@ public class DetailsArea extends Refreshable {
 
 			nameText.setText(name);
 
-			if (1 == mainWindow.getSelected().size())
-				dateText.setText(mainWindow.getSelected().iterator().next()
-						.getCreationDate());
-			else
-				dateText.setText("");
+			try {
+				if (1 == mainWindow.getSelected().size())
+					dateText.setText(mainWindow.getSelected().iterator().next()
+							.getCreationDate());
+				else
+					dateText.setText("");
+			} catch (Exception e) {
+
+			}
 
 			// cleanup
 			for (Control current : tagsContainer.getChildren())
