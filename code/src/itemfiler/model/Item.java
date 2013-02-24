@@ -235,6 +235,7 @@ public class Item {
 			gc.drawImage(fullImage, 0, 0, fullImage.getBounds().width,
 					fullImage.getBounds().height, 0, 0, newwidth, newheight);
 			gc.dispose();
+			fullImage.dispose();
 
 			if (cachedImage.getBounds().height > cachedImage.getBounds().width)
 				setPortrait(true);
