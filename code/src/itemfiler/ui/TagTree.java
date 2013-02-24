@@ -9,10 +9,15 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuDetectEvent;
+import org.eclipse.swt.events.MenuDetectListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -55,6 +60,32 @@ public class TagTree extends Refreshable {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
+
+			}
+		});
+
+		final Menu contextMenu = new Menu(parent);
+		MenuItem item1 = new MenuItem(contextMenu, SWT.PUSH);
+		item1.setText("rename");
+		item1.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RenameTagDialog dialog = new RenameTagDialog(getShell(), tree
+						.getSelection()[0]);
+				dialog.setBlockOnOpen(true);
+				dialog.open();
+				refresh();
+			}
+		});
+
+		parent.setMenu(contextMenu);
+
+		tree.addMenuDetectListener(new MenuDetectListener() {
+
+			@Override
+			public void menuDetected(MenuDetectEvent e) {
+				contextMenu.setVisible(true);
 
 			}
 		});
