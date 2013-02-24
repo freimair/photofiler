@@ -22,7 +22,7 @@ public class ImageViewer extends ApplicationWindow {
 	private Image currentImage;
 
 	public static void showItem(Item item) {
-		if (null != imageLabel) {
+		if (null != imageLabel && !imageLabel.isDisposed()) {
 			fullImage = item.getImage();
 			imageLabel.redraw();
 		}

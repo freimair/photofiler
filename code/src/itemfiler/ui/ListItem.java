@@ -28,6 +28,8 @@ public class ListItem extends Composite {
 		getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
+				if (null == iconLabel || iconLabel.isDisposed())
+					return;
 				iconLabel.setImage(myObject.getThumbnail());
 				iconLabel.redraw();
 			}
