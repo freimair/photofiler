@@ -2,6 +2,9 @@ package itemfiler.ui;
 
 import itemfiler.model.Item;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
@@ -110,6 +113,29 @@ public class ObjectList extends Refreshable {
 					} else if ((e.stateMask & SWT.CTRL) > 0) {
 						mainWindow.addSelected(current);
 						tmp.setSelected(true);
+					} else if ((e.stateMask & SWT.SHIFT) > 0) {
+						if(!mainWindow.getSelected().isEmpty()) {
+							List<Control> children = Arrays.asList(listComposite.getChildren());
+							// find correct listitem
+							Control lastSelectedListItem = null;
+							for (Control current : children)
+								if (((ListItem) current).getObject().equals(
+										mainWindow.getSelected()
+												.get(mainWindow.getSelected()
+														.size() - 1))) {
+									lastSelectedListItem = current;
+									break;
+								}
+
+							List<Control> selected = children.subList(Math.min(
+									children.indexOf(lastSelectedListItem),
+									children.indexOf(tmp)), Math.max(
+									children.indexOf(lastSelectedListItem),
+									children.indexOf(tmp)) + 1);
+
+							for(Control current : selected)
+								((ListItem) current).setSelected(true);
+						}
 					} else {
 						mainWindow.setSelected(current);
 						for (Control currentItem : listComposite.getChildren())

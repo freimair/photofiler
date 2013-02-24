@@ -5,7 +5,9 @@ import itemfiler.model.Item;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
@@ -36,7 +38,7 @@ public class MainWindow extends ApplicationWindow {
 	private DetailsArea detailsArea;
 	private TagTree tagTree;
 
-	private Set<Item> selected = new HashSet<Item>();
+	private List<Item> selected = new ArrayList<>();
 	private Filter filter;
 
 	public MainWindow() {
@@ -221,7 +223,7 @@ public class MainWindow extends ApplicationWindow {
 		detailsArea.refresh();
 	}
 
-	public Set<Item> getSelected() {
+	public List<Item> getSelected() {
 		return selected;
 	}
 

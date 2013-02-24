@@ -2,7 +2,7 @@ package itemfiler.ui;
 
 import itemfiler.model.Item;
 
-import java.util.Set;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.Shell;
 public class AddTagDialog extends Dialog {
 
 	private TagTree tagTree;
-	private Set<Item> selectedItems;
+	private List<Item> selectedItems;
 
-	protected AddTagDialog(Shell parentShell, Set<Item> set) {
+	protected AddTagDialog(Shell parentShell, List<Item> set) {
 		super(parentShell);
 		selectedItems = set;
 	}
