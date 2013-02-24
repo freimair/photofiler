@@ -79,6 +79,20 @@ public class TagTree extends Refreshable {
 			}
 		});
 
+		MenuItem item2 = new MenuItem(contextMenu, SWT.PUSH);
+		item2.setText("move");
+		item2.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				MoveTagDialog dialog = new MoveTagDialog(getShell(), tree
+						.getSelection()[0]);
+				dialog.setBlockOnOpen(true);
+				dialog.open();
+				refresh();
+			}
+		});
+
 		parent.setMenu(contextMenu);
 
 		tree.addMenuDetectListener(new MenuDetectListener() {
