@@ -13,6 +13,9 @@ public class Photomanager {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		if (1 == args.length)
+			home = new File(args[0]);
+
 		Database.init(home.getAbsolutePath() + File.separatorChar
 				+ "database.h2.db");
 
