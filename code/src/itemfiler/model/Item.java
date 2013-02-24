@@ -50,17 +50,19 @@ public class Item {
 
 			Files.move(file.toPath(), target.toPath());
 
-			Database.execute("INSERT INTO objects (path, creationDate) VALUES ('"
+			Database.execute("INSERT INTO objects (path) VALUES ('"
 					+ FileUtils.getRelativePath(Photomanager.home, target)
-					+ "','"
-					+ new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-							.format(getCreationDate(target))
 					+ "')");
 
 			// add to cache
 			int newId = Database.getInteger("SELECT MAX(oid) FROM objects");
 			cache.put(newId, new Item(newId));
-		} catch (SQLException | IOException e) {
+
+			Database.execute("UPDATE objects SET creationDate='"
+					+ new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+							.format(getCreationDate(target))
+					+ "' WHERE oid = '" + newId + "'");
+		} catch (SQLException | IOException | NullPointerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
