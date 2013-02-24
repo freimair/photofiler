@@ -13,7 +13,6 @@ import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -35,19 +34,29 @@ public class TagTree extends Refreshable {
 		tree = new Tree(this, SWT.BORDER | style);
 		tree.setData(this);
 
-		tree.addSelectionListener(new SelectionListener() {
+		tree.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (SWT.CHECK == e.detail) {
+					TreeItem item = (TreeItem) e.item;
+
+					// we have to negate the checked state answer
+					// because the checked state is updated before we
+					// get here
+					if (!item.getChecked()) {
+						item.setChecked(!item.getGrayed());
+						item.setGrayed(!item.getGrayed());
+					}
+
 					// maintain childrens checked state
-					setChildrensCheckedState(((TreeItem) e.item).getChecked(),
-							((TreeItem) e.item));
+					setChildrensCheckedState(new CheckedState(
+							item.getChecked(), item.getGrayed()), item);
 
 					// maintain parents checked state
 					maintainParentsCheckedState(
-							((TreeItem) e.item).getChecked(),
-							((TreeItem) e.item));
+							new CheckedState(item.getChecked(), item
+									.getGrayed()), item);
 
 					List<String> result = new ArrayList<>();
 					gatherCheckedItems(null, result);
@@ -55,12 +64,6 @@ public class TagTree extends Refreshable {
 							.remove("untagged"), result.remove("trash")));
 					mainWindow.refresh((Refreshable) tree.getData());
 				}
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 
@@ -121,22 +124,34 @@ public class TagTree extends Refreshable {
 		}
 	}
 
-	private void setChildrensCheckedState(boolean checked, TreeItem item) {
+	private void setChildrensCheckedState(CheckedState checkedState,
+			TreeItem item) {
 		for (TreeItem current : item.getItems())
-			setChildrensCheckedState(checked, current);
+			setChildrensCheckedState(checkedState, current);
 
-		item.setChecked(checked);
+		item.setChecked(checkedState.getChecked());
+		item.setGrayed(checkedState.getBarred());
 	}
 
-	private void maintainParentsCheckedState(boolean checked, TreeItem item) {
+	private void maintainParentsCheckedState(CheckedState checkedState,
+			TreeItem item) {
 		try {
-			if (checked)
+			if (checkedState.getChecked()) {
 				for (TreeItem current : item.getParentItem().getItems())
 					if (!current.getChecked())
 						return;
 
-			item.getParentItem().setChecked(checked);
-			maintainParentsCheckedState(checked, item.getParentItem());
+				item.getParentItem().setChecked(checkedState.getChecked());
+				maintainParentsCheckedState(checkedState, item.getParentItem());
+			}
+			if (checkedState.getBarred()) {
+				for (TreeItem current : item.getParentItem().getItems())
+					if (!current.getGrayed())
+						return;
+
+				item.getParentItem().setGrayed(checkedState.getBarred());
+				maintainParentsCheckedState(checkedState, item.getParentItem());
+			}
 		} catch (NullPointerException e) {
 			// reached the tree's root
 		}
