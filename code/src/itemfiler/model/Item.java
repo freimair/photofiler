@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -81,43 +80,47 @@ public class Item {
 		updateCache();
 
 		try {
-			List<Integer> ids = null;
-			if (0 < filter.getTags().size()) {
-				for (Entry<String, Collection<String>> currentEntry : filter
-						.getTags().entrySet()) {
-					String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
+			List<Integer> ids = new ArrayList<>();
+			if (0 < filter.getIncludedTags().size()) {
+				String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
 
-					if (0 < currentEntry.getValue().size())
-						sql += " WHERE";
+				if (0 < filter.getIncludedTags().size())
+					sql += " WHERE";
 
-					for (String current : currentEntry.getValue())
-						sql += " tags.name LIKE '" + current + "%' OR";
+				for (String current : filter.getIncludedTags())
+					sql += " tags.name LIKE '" + current + "%' OR";
 
-					if (sql.endsWith("OR"))
-						sql = sql.substring(0, sql.length() - 3);
+				if (sql.endsWith("OR"))
+					sql = sql.substring(0, sql.length() - 3);
 
-					if (null == ids) {
-						ids = new ArrayList<>();
-						ids.addAll(Database.getIntegerList(sql));
-					} else
-						ids.retainAll(Database.getIntegerList(sql));
-				}
-
+				ids.addAll(Database.getIntegerList(sql));
 			}
 
-			if (!filter.getDates().isEmpty()) {
-				String sql = "SELECT oid FROM objects WHERE creationDate LIKE '"
-						+ filter.getDates().iterator().next()
-						.substring(5) + "%'";
-				if(null == ids) {
-					ids = new ArrayList<>();
-					ids.addAll(Database.getIntegerList(sql));
-				} else
-					ids.retainAll(Database.getIntegerList(sql));
+			if (0 < filter.getExcludedTags().size()) {
+				String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
+
+				if (0 < filter.getExcludedTags().size())
+					sql += " WHERE";
+
+				for (String current : filter.getExcludedTags())
+					sql += " tags.name LIKE '" + current + "%' OR";
+
+				if (sql.endsWith("OR"))
+					sql = sql.substring(0, sql.length() - 3);
+
+				ids.removeAll(Database.getIntegerList(sql));
 			}
 
-			if (null == ids)
-				ids = new ArrayList<>();
+			// if (!filter.getDates().isEmpty()) {
+			// String sql = "SELECT oid FROM objects WHERE creationDate LIKE '"
+			// + filter.getDates().iterator().next()
+			// .substring(5) + "%'";
+			// if(null == ids) {
+			// ids = new ArrayList<>();
+			// ids.addAll(Database.getIntegerList(sql));
+			// } else
+			// ids.retainAll(Database.getIntegerList(sql));
+			// }
 
 			if (filter.isIncludeUntagged())
 				ids.addAll(Database

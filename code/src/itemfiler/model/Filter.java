@@ -2,8 +2,7 @@ package itemfiler.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class Filter {
 	private Collection<String> includeTags;
@@ -11,46 +10,46 @@ public class Filter {
 	private boolean includeUntagged = false;
 	private boolean includeTrash = false;
 
-	public Filter(Collection<String> include, Collection<String> exclude,
-			boolean includeUntagged,
-			boolean includeTrash) {
-		this.includeTags = include;
-		this.excludeTags = exclude;
-		this.includeUntagged = includeUntagged;
-		this.includeTrash = includeTrash;
-	}
-
 	public Filter() {
 		this.includeTags = new ArrayList<>();
 		this.excludeTags = new ArrayList<>();
 	}
 
-	public Collection<String> getDates() {
-		Collection<String> result = new HashMap<>(getByRootElement())
-				.get("date");
-		return null == result ? new ArrayList<String>() : result;
+	public Filter(List<String> include, List<String> exclude) {
+		this.includeTags = include;
+		this.excludeTags = exclude;
+
+		this.includeUntagged = includeTags.contains("untagged");
+		this.includeTrash = includeTags.contains("trash");
 	}
 
-	public Map<String, Collection<String>> getTags() {
-		HashMap<String, Collection<String>> result = new HashMap<>(
-				getByRootElement());
-		result.keySet().remove("date");
-		return result;
+	// public Collection<String> getDates() {
+	// Collection<String> result = new HashMap<>(getByRootElement())
+	// .get("date");
+	// return null == result ? new ArrayList<String>() : result;
+	// }
+
+	// private Map<String, Collection<String>> getByRootElement() {
+	// Map<String, Collection<String>> result = new HashMap<>();
+	// String start = "";
+	// for (String current : includeTags) {
+	// String currentStart = current.split("-", 0)[0];
+	// if (!start.equals(currentStart))
+	// result.put(currentStart, new ArrayList<String>());
+	//
+	// result.get(currentStart).add(current);
+	// }
+	//
+	// return result;
+	//
+	// }
+
+	public Collection<String> getIncludedTags() {
+		return includeTags;
 	}
 
-	private Map<String, Collection<String>> getByRootElement() {
-		Map<String, Collection<String>> result = new HashMap<>();
-		String start = "";
-		for(String current : includeTags) {
-			String currentStart = current.split("-", 0)[0];
-			if (!start.equals(currentStart))
-				result.put(currentStart, new ArrayList<String>());
-
-			result.get(currentStart).add(current);
-		}
-
-		return result;
-
+	public Collection<String> getExcludedTags() {
+		return excludeTags;
 	}
 
 	public boolean isIncludeUntagged() {
