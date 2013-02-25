@@ -2,6 +2,8 @@ package itemfiler.ui;
 
 import itemfiler.model.Item;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -142,7 +144,10 @@ public class DetailsArea extends Refreshable {
 			for (Control current : tagsContainer.getChildren())
 				current.dispose();
 
-			for (final String current : commonTags) {
+			List<String> sortedCommonTags = new ArrayList<>(commonTags);
+			Collections.sort(sortedCommonTags);
+
+			for (final String current : sortedCommonTags) {
 				Text tmplabel = new Text(tagsContainer, SWT.BORDER);
 				tmplabel.setText(current);
 				tmplabel.setEditable(false);
