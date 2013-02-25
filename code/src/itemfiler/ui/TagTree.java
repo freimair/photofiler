@@ -46,10 +46,8 @@ public class TagTree extends Refreshable {
 					if (!item.getText().equals("trash")
 							&& !item.getText().equals("untagged")) {
 						// we have to negate the checked state answer because
-						// the
-						// checked state is updated before we get here (the box
-						// was
-						// checked when we clicked it)
+						// the checked state is updated before we get here (the
+						// box was checked when we clicked it)
 						if (!item.getChecked()) {
 							item.setChecked(!item.getGrayed());
 							item.setGrayed(!item.getGrayed());

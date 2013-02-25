@@ -23,27 +23,6 @@ public class Filter {
 		this.includeTrash = includeTags.contains("trash");
 	}
 
-	// public Collection<String> getDates() {
-	// Collection<String> result = new HashMap<>(getByRootElement())
-	// .get("date");
-	// return null == result ? new ArrayList<String>() : result;
-	// }
-
-	// private Map<String, Collection<String>> getByRootElement() {
-	// Map<String, Collection<String>> result = new HashMap<>();
-	// String start = "";
-	// for (String current : includeTags) {
-	// String currentStart = current.split("-", 0)[0];
-	// if (!start.equals(currentStart))
-	// result.put(currentStart, new ArrayList<String>());
-	//
-	// result.get(currentStart).add(current);
-	// }
-	//
-	// return result;
-	//
-	// }
-
 	public Collection<String> getIncludedTags() {
 		return includeTags;
 	}

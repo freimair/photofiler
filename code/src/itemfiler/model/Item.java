@@ -82,45 +82,59 @@ public class Item {
 		try {
 			List<Integer> ids = new ArrayList<>();
 			if (0 < filter.getIncludedTags().size()) {
+				List<String> includeDates = new ArrayList<>();
+
 				String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
 
 				if (0 < filter.getIncludedTags().size())
 					sql += " WHERE";
 
 				for (String current : filter.getIncludedTags())
-					sql += " tags.name LIKE '" + current + "%' OR";
+					if (current.startsWith("date"))
+						includeDates.add(current);
+					else
+						sql += " tags.name LIKE '" + current + "%' OR";
 
 				if (sql.endsWith("OR"))
 					sql = sql.substring(0, sql.length() - 3);
 
-				ids.addAll(Database.getIntegerList(sql));
+				if (!sql.endsWith(" WHERE"))
+					ids.addAll(Database.getIntegerList(sql));
+
+				// handle dates
+				for(String current : includeDates) {
+					sql = "SELECT oid FROM objects WHERE creationDate LIKE '"
+							+ current.substring(5) + "%'";
+					ids.addAll(Database.getIntegerList(sql));
+				}
 			}
 
 			if (0 < filter.getExcludedTags().size()) {
+				List<String> excludeDates = new ArrayList<>();
 				String sql = "SELECT oid FROM objects_tags JOIN tags ON objects_tags.tid=tags.tid";
 
 				if (0 < filter.getExcludedTags().size())
 					sql += " WHERE";
 
 				for (String current : filter.getExcludedTags())
+					if (current.startsWith("date"))
+						excludeDates.add(current);
+					else
 					sql += " tags.name LIKE '" + current + "%' OR";
 
 				if (sql.endsWith("OR"))
 					sql = sql.substring(0, sql.length() - 3);
 
-				ids.removeAll(Database.getIntegerList(sql));
-			}
+				if (!sql.endsWith(" WHERE"))
+					ids.removeAll(Database.getIntegerList(sql));
 
-			// if (!filter.getDates().isEmpty()) {
-			// String sql = "SELECT oid FROM objects WHERE creationDate LIKE '"
-			// + filter.getDates().iterator().next()
-			// .substring(5) + "%'";
-			// if(null == ids) {
-			// ids = new ArrayList<>();
-			// ids.addAll(Database.getIntegerList(sql));
-			// } else
-			// ids.retainAll(Database.getIntegerList(sql));
-			// }
+				// handle dates
+				for (String current : excludeDates) {
+					sql = "SELECT oid FROM objects WHERE creationDate LIKE '"
+							+ current.substring(5) + "%'";
+					ids.removeAll(Database.getIntegerList(sql));
+				}
+			}
 
 			if (filter.isIncludeUntagged())
 				ids.addAll(Database
